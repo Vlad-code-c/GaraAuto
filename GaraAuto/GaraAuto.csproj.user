@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Compile Update="DragabbleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\addForms\AddAutomobile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\addForms\AddCursa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\addForms\addLocalitate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\addForms\AddPasager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\addForms\AddTipAutomobil.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\addForms\AddTraseu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\addForms\OcupaLoc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\commonUserControls\ControlBarButtons.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="forms\controlGenerator\controls\CheckboxControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="forms\controlGenerator\controls\ComboboxControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="forms\controlGenerator\controls\LabelControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="forms\controlGenerator\controls\TextboxControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="forms\formGenerator\FormGenerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\test\FormsBuilder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\test\TestMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>

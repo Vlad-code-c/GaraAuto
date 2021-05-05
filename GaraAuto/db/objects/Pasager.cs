@@ -6,7 +6,7 @@ namespace GaraAuto.db.objects
     {
         private static List<Pasager> pasageri = new List<Pasager>();
 
-        public int idnp;
+        public long idnp;
         public string nume_prenume;
         public int birth_year;
         

@@ -13,12 +13,28 @@ namespace GaraAuto.db.objects
         
         public override void create()
         {
-            DatabaseManager.getInstance().CreateTipAutomobil(this);
+            TipAutomobil tipAutomobil = DatabaseManager.getInstance().CreateTipAutomobil(this);
+            if (tipAutomobil != null)
+            {
+                this.id = tipAutomobil.id;
+                this.denumire = tipAutomobil.denumire;
+                this.nrLocuri = tipAutomobil.nrLocuri;
+            }
         }
 
         public override void read()
         {
-            DatabaseManager.getInstance().ReadTipAutomobil(this);
+            TipAutomobil tipAutomobil = DatabaseManager.getInstance().ReadTipAutomobil(this);
+            if (tipAutomobil != null)
+            {
+                this.id = tipAutomobil.id;
+                this.denumire = tipAutomobil.denumire;
+                this.nrLocuri = tipAutomobil.nrLocuri;
+            }
+            else
+            {
+                this.id = -1;
+            }
         }
 
         public override void update()

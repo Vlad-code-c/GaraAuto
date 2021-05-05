@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace GaraAuto.db.objects
 {
@@ -13,7 +14,13 @@ namespace GaraAuto.db.objects
         
         public override void create()
         {
-            DatabaseManager.getInstance().CreateLocalitate(this);
+            Localitate localitate = DatabaseManager.getInstance().CreateLocalitate(this);
+            if (localitate != null)
+            {
+                this.id = localitate.id;
+                this.name = localitate.name;
+                this.raion = localitate.raion;
+            }
         }
 
         public override void read()
@@ -21,6 +28,7 @@ namespace GaraAuto.db.objects
             Localitate localitate = DatabaseManager.getInstance().ReadLocalitate(this);
             if (localitate != null)
             {
+                id = localitate.id;
                 name = localitate.name;
                 raion = localitate.raion;
             }
@@ -40,6 +48,11 @@ namespace GaraAuto.db.objects
         {
             localitati = DatabaseManager.getInstance().GetAllLocal();
             return localitati;
+        }
+
+        public override string ToString()
+        {
+            return "id: " + id + ", name: " + name + ", raion: " + raion.ToString();
         }
     }
 }

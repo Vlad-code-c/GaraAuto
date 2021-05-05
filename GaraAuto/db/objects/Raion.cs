@@ -12,12 +12,18 @@ namespace GaraAuto.db.objects
         
         public override void create()
         {
-            DatabaseManager.getInstance().CreateRaion(this);
+            Raion raion = DatabaseManager.getInstance().CreateRaion(this);
+            if (raion != null)
+            {
+                this.Id = raion.Id;
+                this.Nume = raion.Nume;
+            }
         }
 
         public override void read()
         {
-            DatabaseManager.getInstance().ReadRaion(this);
+            Raion raion = DatabaseManager.getInstance().ReadRaion(this);
+            this.Nume = raion.Nume;
         }
 
         public override void update()
@@ -34,6 +40,11 @@ namespace GaraAuto.db.objects
         {
             raioane = DatabaseManager.getInstance().GetAllRaion();
             return raioane;
+        }
+
+        public override string ToString()
+        {
+            return "id: " + Id + ", nume: " + Nume;
         }
     }
 }

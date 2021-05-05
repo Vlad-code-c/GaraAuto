@@ -3,6 +3,7 @@ using GaraAuto.forms.main;
 using GaraAuto.forms.test;
 using System;
 using System.Windows.Forms;
+using GaraAuto.db.objects;
 
 namespace GaraAuto
 {
@@ -17,7 +18,7 @@ namespace GaraAuto
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new addLocalitate());
+			Application.Run(new AddTraseu());
 		}
 	}
 }

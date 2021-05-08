@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GaraAuto.db.objects
 {
@@ -7,6 +8,7 @@ namespace GaraAuto.db.objects
         private static List<Cursa> curse = new List<Cursa>();
 
         public int id_cursa;
+        public string ora = "%";
         public Traseu traseu;
         public Automobile Automobile;
         
@@ -17,7 +19,14 @@ namespace GaraAuto.db.objects
 
         public override void read()
         {
-            DatabaseManager.getInstance().ReadCursa(this);
+            Cursa readCursa = DatabaseManager.getInstance().ReadCursa(this);
+            if (readCursa != null)
+            {
+                this.id_cursa = readCursa.id_cursa;
+                this.ora = readCursa.ora;
+                this.traseu = readCursa.traseu;
+                this.Automobile = readCursa.Automobile;
+            }
         }
 
         public override void update()
@@ -34,6 +43,11 @@ namespace GaraAuto.db.objects
         {
             curse = DatabaseManager.getInstance().GetAllCursa();
             return curse;
+        }
+
+        public String toListString()
+        {
+            return this.traseu.denumire + " - " + this.Automobile.tipAutomobil.denumire + " - " + this.ora;
         }
     }
 }

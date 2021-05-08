@@ -8,7 +8,7 @@ namespace GaraAuto.db.objects
         private static List<Raion> raioane = new List<Raion>();
         
         public int Id { get; set; }
-        public string Nume { get; set; }
+        public string Nume { get; set; } = "%";
         
         public override void create()
         {

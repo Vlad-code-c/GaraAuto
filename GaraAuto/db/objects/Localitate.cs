@@ -9,7 +9,7 @@ namespace GaraAuto.db.objects
         private static List<Localitate> localitati = new List<Localitate>();
 
         public int id;
-        public string name;
+        public string name = "%";
         public Raion raion;
         
         public override void create()

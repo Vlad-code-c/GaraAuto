@@ -18,7 +18,7 @@ namespace GaraAuto
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new AddTraseu());
+			Application.Run(new AddTipAutomobil());
 		}
 	}
 }

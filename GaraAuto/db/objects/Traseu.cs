@@ -7,24 +7,19 @@ namespace GaraAuto.db.objects
         private static List<Traseu> trasee = new List<Traseu>();
 
         public int id_traseu;
-
-        public string denumire
-        {
-            get
-            {
-                return localitate_inceput.name + " - " + localitate_sfarsit.name;
-            }
-        }
-
         public Localitate localitate_inceput;
-        public Localitate localitate_sfarsit;
 
-        
+        public int distanta;
+        public Localitate localitate_sfarsit;
+        public string denumire => localitate_inceput.name + " - " + localitate_sfarsit.name;
+
+
         public override void create()
         {
             Traseu traseu = DatabaseManager.getInstance().CreateTraseu(this);
             if (traseu != null)
             {
+                this.distanta = traseu.distanta;
                 this.id_traseu = traseu.id_traseu;
                 this.localitate_inceput = traseu.localitate_inceput;
                 this.localitate_sfarsit = traseu.localitate_sfarsit;
@@ -33,7 +28,14 @@ namespace GaraAuto.db.objects
 
         public override void read()
         {
-            DatabaseManager.getInstance().ReadTraseu(this);
+            Traseu traseu = DatabaseManager.getInstance().ReadTraseu(this);
+            if (traseu != null)
+            {
+                this.distanta = traseu.distanta;
+                this.id_traseu = traseu.id_traseu;
+                this.localitate_inceput = traseu.localitate_inceput;
+                this.localitate_sfarsit = traseu.localitate_sfarsit;
+            }
         }
 
         public override void update()
@@ -54,7 +56,7 @@ namespace GaraAuto.db.objects
 
         public override string ToString()
         {
-            return "id: " + id_traseu + ", denumire: " + denumire;
+            return $"id: {id_traseu}, denumire: {denumire}, distanta: {distanta}";
         }
     }
 }

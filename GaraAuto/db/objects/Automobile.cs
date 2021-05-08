@@ -7,7 +7,7 @@ namespace GaraAuto.db.objects
         private static List<Automobile> automobile = new List<Automobile>();
 
         public int id;
-        public string nrInmatriculare;
+        public string nrInmatriculare = "%";
         public TipAutomobil tipAutomobil;
         
         public override void create()
@@ -27,7 +27,17 @@ namespace GaraAuto.db.objects
 
         public override void read()
         {
-            DatabaseManager.getInstance().ReadAutomobile(this);
+            Automobile automobil = DatabaseManager.getInstance().ReadAutomobile(this);
+            if (automobil != null)
+            {
+                this.id = automobil.id;
+                this.nrInmatriculare = automobil.nrInmatriculare;
+                this.tipAutomobil = automobil.tipAutomobil;
+            }
+            else
+            {
+                this.id = -1;
+            }
         }
 
         public override void update()

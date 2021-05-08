@@ -68,5 +68,20 @@ namespace GaraAuto.forms.addForms
 		{
 
 		}
+
+		private void btn_primary_add_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void addLocalitate_Load(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btn_delete_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

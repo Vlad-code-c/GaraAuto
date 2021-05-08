@@ -36,6 +36,7 @@ CREATE TABLE Traseu
 (
     id_traseu             int primary key identity,
 --     denumire              nvarchar(50) NULL,
+    distanta              int,
     id_localitate_inceput int,
     id_localitate_sfarsit int,
 
@@ -44,22 +45,11 @@ CREATE TABLE Traseu
     constraint uq_id_localit unique (id_localitate_inceput, id_localitate_sfarsit)
 );
 
--- CREATE VIEW Traseu_Full AS
--- SELECT T.id_traseu,
---        T.id_localitate_inceput,
---        T.id_localitate_sfarsit,
---        L.id_raion,
---        R.nume                                                                 AS 'Raion',
---        (SELECT TOP 1 nume FROM Localitate WHERE id = T.id_localitate_inceput) AS 'Localitate_inceput',
---        (SELECT TOP 1 nume FROM Localitate WHERE id = T.id_localitate_sfarsit) AS 'Localitate_sfarsit'
--- FROM Traseu AS T
---          LEFT JOIN Localitate L on T.id_localitate_inceput = L.id
---          LEFT JOIN Raion R on L.id_raion = R.id
-
 CREATE OR ALTER VIEW Traseu_Full AS
 SELECT T.id_traseu,
        T.id_localitate_inceput,
        T.id_localitate_sfarsit,
+       T.distanta,
 
        (SELECT TOP 1 nume FROM Localitate WHERE id = T.id_localitate_inceput) AS 'Localitate_inceput',
        (SELECT TOP 1 nume FROM Localitate WHERE id = T.id_localitate_sfarsit) AS 'Localitate_sfarsit',
@@ -81,7 +71,6 @@ SELECT T.id_traseu,
               Raion.id)                                                       AS 'nume_raion_sfarsit'
 FROM Traseu AS T
 
-
 -- create trigger set_denumire_traseu
 --     on Traseu
 --     after insert
@@ -101,10 +90,41 @@ CREATE TABLE Cursa
     id_cursa     int identity primary key,
     id_traseu    int,
     id_automobil int,
+    ora          time,
 
     constraint id_traseu_fk foreign key (id_traseu) references Traseu (id_traseu),
-    constraint id_automobile_fk foreign key (id_automobil) references Automobile (id)
+    constraint id_automobile_fk foreign key (id_automobil) references Automobile (id),
+    constraint unique (id_traseu, id_automobil)
 );
+CREATE OR ALTER VIEW Cursa_Full AS
+SELECT C.id_cursa,
+       C.id_automobil,
+       C.ora,
+       A.id AS 'id_auto',
+       A.nr_inmatriculare,
+       Ta.id AS 'id_tip_auto',
+       TA.denumire AS 'denumire_tip_auto',
+       TA.nr_locuri,
+       T.id_traseu,
+       T.id_localitate_inceput,
+       T.id_localitate_sfarsit,
+       T.distanta,
+       T.Localitate_inceput,
+       T.Localitate_sfarsit,
+       T.id_raion_inceput,
+       T.nume_raion_inceput,
+       T.id_raion_sfarsit,
+       t.nume_raion_sfarsit
+FROM Cursa C,
+     Traseu_Full T,
+     TipAutomobil TA,
+     Automobile A
+WHERE C.id_traseu = T.id_traseu
+  AND A.tip_automobil = TA.id
+  AND C.id_automobil = A.id
+
+SELECT * FROM Traseu_Full
+-- ALTER TABLE Cursa ADD unique (id_traseu, id_automobil)
 
 CREATE TABLE Pasager
 (

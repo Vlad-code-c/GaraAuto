@@ -30,7 +30,6 @@ namespace GaraAuto.forms.addForms
 		private void InitializeComponent()
 		{
 			this.label3 = new System.Windows.Forms.Label();
-			this.btn_primary_add = new System.Windows.Forms.Button();
 			this.txt_name = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.txt_surname = new System.Windows.Forms.TextBox();
@@ -40,7 +39,15 @@ namespace GaraAuto.forms.addForms
 			this.txt_idnp = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.controlBarButtons1 = new GaraAuto.forms.commonUserControls.ControlBarButtons();
+			this.pb_idnp = new System.Windows.Forms.PictureBox();
+			this.pb_nume = new System.Windows.Forms.PictureBox();
+			this.pb_prenume = new System.Windows.Forms.PictureBox();
+			this.btn_delete = new System.Windows.Forms.Button();
+			this.btn_primary_add = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pb_idnp)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pb_nume)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pb_prenume)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// label3
@@ -52,21 +59,6 @@ namespace GaraAuto.forms.addForms
 			this.label3.Size = new System.Drawing.Size(225, 31);
 			this.label3.TabIndex = 15;
 			this.label3.Text = "Adauga pasager";
-			// 
-			// btn_primary_add
-			// 
-			this.btn_primary_add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btn_primary_add.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			this.btn_primary_add.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.btn_primary_add.Image = global::GaraAuto.Properties.Resources.next_black;
-			this.btn_primary_add.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.btn_primary_add.Location = new System.Drawing.Point(225, 340);
-			this.btn_primary_add.Name = "btn_primary_add";
-			this.btn_primary_add.Size = new System.Drawing.Size(129, 40);
-			this.btn_primary_add.TabIndex = 14;
-			this.btn_primary_add.Text = "Adauga";
-			this.btn_primary_add.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.btn_primary_add.UseVisualStyleBackColor = true;
 			// 
 			// txt_name
 			// 
@@ -167,12 +159,81 @@ namespace GaraAuto.forms.addForms
 			this.controlBarButtons1.Size = new System.Drawing.Size(66, 33);
 			this.controlBarButtons1.TabIndex = 36;
 			// 
+			// pb_idnp
+			// 
+			this.pb_idnp.Image = global::GaraAuto.Properties.Resources._false;
+			this.pb_idnp.Location = new System.Drawing.Point(510, 106);
+			this.pb_idnp.Name = "pb_idnp";
+			this.pb_idnp.Size = new System.Drawing.Size(59, 24);
+			this.pb_idnp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.pb_idnp.TabIndex = 42;
+			this.pb_idnp.TabStop = false;
+			// 
+			// pb_nume
+			// 
+			this.pb_nume.Image = global::GaraAuto.Properties.Resources._false;
+			this.pb_nume.Location = new System.Drawing.Point(510, 147);
+			this.pb_nume.Name = "pb_nume";
+			this.pb_nume.Size = new System.Drawing.Size(59, 24);
+			this.pb_nume.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.pb_nume.TabIndex = 43;
+			this.pb_nume.TabStop = false;
+			// 
+			// pb_prenume
+			// 
+			this.pb_prenume.Image = global::GaraAuto.Properties.Resources._false;
+			this.pb_prenume.Location = new System.Drawing.Point(510, 192);
+			this.pb_prenume.Name = "pb_prenume";
+			this.pb_prenume.Size = new System.Drawing.Size(59, 24);
+			this.pb_prenume.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.pb_prenume.TabIndex = 44;
+			this.pb_prenume.TabStop = false;
+			// 
+			// btn_delete
+			// 
+			this.btn_delete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(86)))), ((int)(((byte)(80)))));
+			this.btn_delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btn_delete.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+			this.btn_delete.ForeColor = System.Drawing.Color.White;
+			this.btn_delete.Image = global::GaraAuto.Properties.Resources.delete_white;
+			this.btn_delete.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.btn_delete.Location = new System.Drawing.Point(116, 327);
+			this.btn_delete.Name = "btn_delete";
+			this.btn_delete.Size = new System.Drawing.Size(129, 40);
+			this.btn_delete.TabIndex = 54;
+			this.btn_delete.Text = "Sterge";
+			this.btn_delete.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.btn_delete.UseVisualStyleBackColor = false;
+			this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
+			// 
+			// btn_primary_add
+			// 
+			this.btn_primary_add.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(92)))), ((int)(((byte)(184)))), ((int)(((byte)(92)))));
+			this.btn_primary_add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btn_primary_add.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+			this.btn_primary_add.ForeColor = System.Drawing.Color.White;
+			this.btn_primary_add.Image = global::GaraAuto.Properties.Resources.next_white;
+			this.btn_primary_add.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.btn_primary_add.Location = new System.Drawing.Point(363, 327);
+			this.btn_primary_add.Name = "btn_primary_add";
+			this.btn_primary_add.Size = new System.Drawing.Size(129, 40);
+			this.btn_primary_add.TabIndex = 53;
+			this.btn_primary_add.Text = "Adauga";
+			this.btn_primary_add.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.btn_primary_add.UseVisualStyleBackColor = false;
+			this.btn_primary_add.Click += new System.EventHandler(this.btn_primary_add_Click);
+			// 
 			// AddPasager
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(226)))), ((int)(((byte)(220)))));
 			this.ClientSize = new System.Drawing.Size(612, 412);
+			this.Controls.Add(this.btn_delete);
+			this.Controls.Add(this.btn_primary_add);
+			this.Controls.Add(this.pb_prenume);
+			this.Controls.Add(this.pb_nume);
+			this.Controls.Add(this.pb_idnp);
 			this.Controls.Add(this.controlBarButtons1);
 			this.Controls.Add(this.txt_idnp);
 			this.Controls.Add(this.label5);
@@ -181,7 +242,6 @@ namespace GaraAuto.forms.addForms
 			this.Controls.Add(this.txt_surname);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label3);
-			this.Controls.Add(this.btn_primary_add);
 			this.Controls.Add(this.txt_name);
 			this.Controls.Add(this.label1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -189,6 +249,9 @@ namespace GaraAuto.forms.addForms
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "AddPasager";
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pb_idnp)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pb_nume)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pb_prenume)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -197,7 +260,6 @@ namespace GaraAuto.forms.addForms
 		#endregion
 
 		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Button btn_primary_add;
 		private System.Windows.Forms.TextBox txt_name;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox txt_surname;
@@ -207,5 +269,10 @@ namespace GaraAuto.forms.addForms
 		private System.Windows.Forms.TextBox txt_idnp;
 		private System.Windows.Forms.Label label5;
 		private commonUserControls.ControlBarButtons controlBarButtons1;
+		private System.Windows.Forms.PictureBox pb_idnp;
+		private System.Windows.Forms.PictureBox pb_nume;
+		private System.Windows.Forms.PictureBox pb_prenume;
+		private System.Windows.Forms.Button btn_delete;
+		private System.Windows.Forms.Button btn_primary_add;
 	}
 }

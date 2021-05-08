@@ -21,6 +21,7 @@ namespace GaraAuto.forms.addForms
 			cb_start.TextChanged += cb_OnTextChanged;
 			cb_finish.TextChanged += cb_OnTextChanged;
 			btn_primary_add.Click += btn_primary_addOnClick;
+
 		}
 
 		private void btn_primary_addOnClick(object sender, EventArgs e)
@@ -41,7 +42,8 @@ namespace GaraAuto.forms.addForms
 			traseu.localitate_inceput = localitate;
 			traseu.localitate_sfarsit = localitate_end;
 
-			MessageBox.Show(traseu.localitate_inceput.name + " - " + traseu.localitate_sfarsit.name);
+			traseu.distanta = Convert.ToInt32(customNumericUpDown1.Value.ToString().Replace(" km", ""));
+			
 			traseu.create();
 		}
 
@@ -71,6 +73,31 @@ namespace GaraAuto.forms.addForms
 			cb_finish.AutoCompleteMode = AutoCompleteMode.Suggest;
 			cb_finish.AutoCompleteSource = AutoCompleteSource.CustomSource;
 			cb_finish.AutoCompleteCustomSource = acsc;
+		}
+
+		private void label1_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void txt_denumire_TextChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void pictureBox2_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btn_primary_add_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btn_delete_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

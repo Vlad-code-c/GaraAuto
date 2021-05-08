@@ -7,7 +7,7 @@ namespace GaraAuto.db.objects
         private static List<TipAutomobil> automobile = new List<TipAutomobil>();
 
         public int id;
-        public string denumire;
+        public string denumire = "%";
         public int nrLocuri;
         
         

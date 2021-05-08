@@ -99,10 +99,10 @@ namespace GaraAuto.db
                 {
                     String queryReturn =
                         $"SELECT L.id AS 'id_loc', L.nume AS 'nume_loc', R.id AS 'id_raion', R.nume AS 'nume_raion' FROM Raion AS R, Localitate AS L " +
-                    $"WHERE R.Id = L.id_raion AND LOWER(L.nume) LIKE LOWER('{localitate.name}')";
+                        $"WHERE R.Id = L.id_raion AND LOWER(L.nume) LIKE LOWER('{localitate.name}')";
 
                     connection.Open();
-                    
+
 
                     SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
 
@@ -114,7 +114,7 @@ namespace GaraAuto.db
                         int id_localitate = (int) dataReader["id_loc"];
                         string nume_localit = (string) dataReader["nume_loc"];
 
-                        
+
                         Localitate localit = new Localitate()
                         {
                             id = id_localitate,
@@ -129,7 +129,6 @@ namespace GaraAuto.db
                         // MessageBox.Show(localit.name);
                         return localit;
                     }
-                    
                 }
             }
             catch (Exception e)
@@ -140,7 +139,7 @@ namespace GaraAuto.db
 
             return null;
         }
-    
+
         public void UpdateLocalitate(Localitate localitate)
         {
             throw new NotImplementedException();
@@ -360,12 +359,56 @@ namespace GaraAuto.db
 
         public void UpdateTipAutomobil(TipAutomobil tipAutomobil)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"UPDATE TipAutomobil SET denumire = '{tipAutomobil.denumire}', nr_locuri = {tipAutomobil.nrLocuri} WHERE id = {tipAutomobil.id}";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            connection.Close();
         }
 
         public void DeleteTipAutomobil(TipAutomobil tipAutomobil)
         {
-            throw new NotImplementedException();
+            
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"DELETE FROM TipAutomobil WHERE id = {tipAutomobil.id}";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("REFERENCE"))
+                {
+                    DialogResult dialogResult = MessageBox
+                        .Show("Tipul nu a putut fi sters deoarece este folosit de catre alt tabel. Afiseaza eroarea?",
+                            "Foreign Key Exception", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+                }
+            }
+
+            connection.Close();
         }
 
         public List<TipAutomobil> GetAllTipAutomobil()
@@ -402,31 +445,65 @@ namespace GaraAuto.db
 
         public Automobile CreateAutomobile(Automobile Automobil)
         {
-            using (SqlConnection connection = getConnection())
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"INSERT INTO Automobile(nr_inmatriculare, tip_automobil) VALUES ('{Automobil.nrInmatriculare}', {Automobil.tipAutomobil.id})";
+            String queryReturn =
+                "SELECT auto.id, auto.nr_inmatriculare, auto.tip_automobil, tip.denumire, tip.nr_locuri " +
+                "FROM Automobile AS auto, TipAutomobil AS tip " +
+                $"WHERE auto.tip_automobil = tip.id AND LOWER(auto.nr_inmatriculare) LIKE LOWER('{Automobil.nrInmatriculare}')";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+            SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
+
+            try
             {
-                String queryInsert =
-                    $"INSERT INTO Automobile(nr_inmatriculare, tip_automobil) VALUES ('{Automobil.nrInmatriculare}', {Automobil.tipAutomobil.id})";
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            SqlDataReader dataReader = commandSelect.ExecuteReader();
+
+            if (dataReader.Read())
+            {
+                return new Automobile()
+                {
+                    id = (int) dataReader["id"],
+                    nrInmatriculare = (string) dataReader["nr_inmatriculare"],
+                    tipAutomobil = new TipAutomobil()
+                    {
+                        id = (int) dataReader["tip_automobil"],
+                        denumire = (string) dataReader["denumire"],
+                        nrLocuri = (int) dataReader["nr_locuri"]
+                    }
+                };
+            }
+
+            connection.Close();
+
+
+            return null;
+        }
+
+        public Automobile ReadAutomobile(Automobile Automobil)
+        {
+            try
+            {
+                SqlConnection connection = getConnection();
                 String queryReturn =
-                    "SELECT auto.id, auto.nr_inmatriculare, auto.tip_automobil, tip.denumire, tip.nr_locuri " +
-                    "FROM Automobile AS auto, TipAutomobil AS tip " +
-                    $"WHERE auto.tip_automobil = tip.id AND LOWER(auto.nr_inmatriculare) LIKE LOWER('{Automobil.nrInmatriculare}')";
+                    $"SELECT id, nr_inmatriculare, tip_automobil FROM Automobile WHERE nr_inmatriculare = '{Automobil.nrInmatriculare}' AND tip_automobil = {Automobil.tipAutomobil.id}";
 
                 connection.Open();
 
-                SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
                 SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
 
-                try
-                {
-                    commandInsert.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    //Ignored
-                }
 
                 SqlDataReader dataReader = commandSelect.ExecuteReader();
-
                 if (dataReader.Read())
                 {
                     return new Automobile()
@@ -441,57 +518,93 @@ namespace GaraAuto.db
                         }
                     };
                 }
+
+                connection.Close();
+            }
+
+            catch (Exception e)
+            {
+                // ignored
             }
 
             return null;
         }
 
-        public Localitate ReadAutomobile(Automobile Automobil)
-        {
-            throw new NotImplementedException();
-        }
-
         public void UpdateAutomobile(Automobile Automobil)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"UPDATE Automobile SET tip_automobil = {Automobil.tipAutomobil.id} WHERE nr_inmatriculare LIKE '{Automobil.nrInmatriculare}' ";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                //Ignored
+            }
+
+            connection.Close();
         }
 
         public void DeleteAutomobile(Automobile Automobil)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"DELETE FROM Automobile WHERE nr_inmatriculare LIKE '{Automobil.nrInmatriculare}' ";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                //Ignored
+            }
+
+            connection.Close();
         }
 
         public List<Automobile> GetAllAutomobile()
         {
             List<Automobile> automobile = new List<Automobile>();
 
-            using (SqlConnection connection = getConnection())
+            SqlConnection connection = getConnection();
+            String querySelect =
+                "SELECT auto.id, auto.nr_inmatriculare, auto.tip_automobil, tip.denumire, tip.nr_locuri " +
+                "FROM Automobile AS auto, TipAutomobil AS tip " +
+                "WHERE auto.tip_automobil = tip.id";
+
+            connection.Open();
+
+            SqlCommand commandSelect = new SqlCommand(querySelect, connection);
+
+            SqlDataReader dataReader = commandSelect.ExecuteReader();
+            while (dataReader.Read())
             {
-                String querySelect =
-                    "SELECT auto.id, auto.nr_inmatriculare, auto.tip_automobil, tip.denumire, tip.nr_locuri " +
-                    "FROM Automobile AS auto, TipAutomobil AS tip " +
-                    "WHERE auto.id = tip.id";
-
-                connection.Open();
-
-                SqlCommand commandSelect = new SqlCommand(querySelect, connection);
-
-                SqlDataReader dataReader = commandSelect.ExecuteReader();
-                while (dataReader.Read())
+                automobile.Add(new Automobile()
                 {
-                    automobile.Add(new Automobile()
+                    id = (int) dataReader["id"],
+                    nrInmatriculare = (string) dataReader["nr_inmatriculare"],
+                    tipAutomobil = new TipAutomobil()
                     {
-                        id = (int) dataReader["id"],
-                        nrInmatriculare = (string) dataReader["nr_inmatriculare"],
-                        tipAutomobil = new TipAutomobil()
-                        {
-                            id = (int) dataReader["tip_automobil"],
-                            denumire = (string) dataReader["denumire"],
-                            nrLocuri = (int) dataReader["nr_locuri"]
-                        }
-                    });
-                }
+                        id = (int) dataReader["tip_automobil"],
+                        denumire = (string) dataReader["denumire"],
+                        nrLocuri = (int) dataReader["nr_locuri"]
+                    }
+                });
             }
+
+            connection.Close();
 
             return automobile;
         }
@@ -575,7 +688,7 @@ namespace GaraAuto.db
             using (SqlConnection connection = getConnection())
             {
                 String queryInsert =
-                    $"INSERT INTO Traseu(id_localitate_inceput, id_localitate_sfarsit) VALUES ({traseu.localitate_inceput.id}, {traseu.localitate_sfarsit.id})";
+                    $"INSERT INTO Traseu(id_localitate_inceput, id_localitate_sfarsit, distanta) VALUES ({traseu.localitate_inceput.id}, {traseu.localitate_sfarsit.id}, {traseu.distanta})";
 
                 connection.Open();
 
@@ -598,8 +711,9 @@ namespace GaraAuto.db
         {
             using (SqlConnection connection = getConnection())
             {
-                String queryReturn = "SELECT id_traseu, id_localitate_inceput, id_localitate_sfarsit, Localitate_inceput, Localitate_sfarsit, id_raion_inceput, nume_raion_inceput, id_raion_sfarsit, nume_raion_sfarsit FROM Traseu_Full" +
-                                     $" WHERE id_localitate_inceput = {traseu.localitate_inceput.id} AND id_localitate_sfarsit = {traseu.localitate_sfarsit.id}";
+                String queryReturn =
+                    "SELECT id_traseu, id_localitate_inceput, id_localitate_sfarsit, Localitate_inceput, Localitate_sfarsit, id_raion_inceput, nume_raion_inceput, id_raion_sfarsit, nume_raion_sfarsit, distanta FROM Traseu_Full" +
+                    $" WHERE id_localitate_inceput = {traseu.localitate_inceput.id} AND id_localitate_sfarsit = {traseu.localitate_sfarsit.id}";
 
                 connection.Open();
 
@@ -612,6 +726,7 @@ namespace GaraAuto.db
                     return new Traseu()
                     {
                         id_traseu = (int) dataReader["id_traseu"],
+                        distanta = (int) dataReader["distanta"],
                         localitate_inceput = new Localitate()
                         {
                             id = (int) dataReader["id_localitate_inceput"],
@@ -667,6 +782,7 @@ namespace GaraAuto.db
                     trasee.Add(new Traseu()
                     {
                         id_traseu = (int) dataReader["id_traseu"],
+                        distanta = (int) dataReader["distanta"],
                         localitate_inceput = new Localitate()
                         {
                             id = (int) dataReader["id_localitate_inceput"],
@@ -679,11 +795,12 @@ namespace GaraAuto.db
                         },
                         localitate_sfarsit = new Localitate()
                         {
-                            id = (int) dataReader["id_raion_sfarsit"],
-                            name = (string) dataReader["nume_raion_sfarsit"],
+                            id = (int) dataReader["id_localitate_sfarsit"],
+                            name = (string) dataReader["Localitate_sfarsit"],
                             raion = new Raion()
                             {
-                                Id = (int) dataReader["id_raion"]
+                                Id = (int) dataReader["id_raion_sfarsit"],
+                                Nume = (string) dataReader["nume_raion_sfarsit"]
                             }
                         }
                     });
@@ -698,14 +815,91 @@ namespace GaraAuto.db
 
         #region Cursa
 
-        public void CreateCursa(Cursa cursa)
+        public Cursa CreateCursa(Cursa cursa)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = getConnection())
+            {
+                String queryInsert =
+                    $"INSERT INTO Cursa(id_traseu, id_automobil, ora) VALUES ({cursa.traseu.id_traseu}, {cursa.Automobile.tipAutomobil.id}, '{cursa.ora}')";
+
+                connection.Open();
+
+                SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+                try
+                {
+                    commandInsert.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw;
+                }
+            }
+
+            return ReadCursa(cursa);
         }
 
-        public Localitate ReadCursa(Cursa cursa)
+        public Cursa ReadCursa(Cursa cursa)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = getConnection())
+            {
+                String queryReturn =
+                    "SELECT id_cursa, id_automobil, CONVERT(nvarchar(5), ora) AS ora, id_auto, nr_inmatriculare, id_tip_auto, denumire_tip_auto, nr_locuri, id_traseu, id_localitate_inceput, id_localitate_sfarsit, distanta, Localitate_inceput, Localitate_sfarsit, id_raion_inceput, nume_raion_inceput, id_raion_sfarsit, nume_raion_sfarsit FROM Cursa_Full " +
+                    $" WHERE id_automobil LIKE '{cursa.traseu.id_traseu}' AND CONVERT(nvarchar(8), ora) LIKE '{cursa.ora}'";
+                connection.Open();
+
+                SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
+
+                SqlDataReader dataReader = commandSelect.ExecuteReader();
+
+                if (dataReader.Read())
+                {
+                    return new Cursa()
+                    {
+                        id_cursa = (int) dataReader["id_cursa"],
+                        ora = (string) dataReader["ora"],
+                        Automobile = new Automobile()
+                        {
+                            id = (int) dataReader["id_automobil"],
+                            nrInmatriculare = (string) dataReader["nr_inmatriculare"],
+                            tipAutomobil = new TipAutomobil()
+                            {
+                                denumire = (string) dataReader["denumire_tip_auto"],
+                                id = (int) dataReader["id_tip_auto"],
+                                nrLocuri = (int) dataReader["nr_locuri"]
+                            }
+                        },
+                        traseu = new Traseu()
+                        {
+                            id_traseu = (int) dataReader["id_traseu"],
+                            distanta = (int) dataReader["distanta"],
+                            localitate_inceput = new Localitate()
+                            {
+                                id = (int) dataReader["id_localitate_inceput"],
+                                name = (string) dataReader["Localitate_inceput"],
+                                raion = new Raion()
+                                {
+                                    Id = (int) dataReader["id_raion_inceput"],
+                                    Nume = (string) dataReader["nume_raion_inceput"]
+                                }
+                            },
+                            localitate_sfarsit = new Localitate()
+                            {
+                                id = (int) dataReader["id_localitate_sfarsit"],
+                                name = (string) dataReader["Localitate_sfarsit"],
+                                raion = new Raion()
+                                {
+                                    Id = (int) dataReader["id_raion_sfarsit"],
+                                    Nume = (string) dataReader["nume_raion_sfarsit"]
+                                }
+                            }
+                        }
+                    };
+                }
+            }
+
+            return null;
         }
 
         public void UpdateCursa(Cursa cursa)
@@ -720,7 +914,65 @@ namespace GaraAuto.db
 
         public List<Cursa> GetAllCursa()
         {
-            throw new NotImplementedException();
+            List<Cursa> curse = new List<Cursa>();
+
+            using (SqlConnection connection = getConnection())
+            {
+                String querySelect =
+                    "SELECT id_cursa, id_automobil, CONVERT(nvarchar(5), ora) AS ora, id_auto, nr_inmatriculare, id_tip_auto, denumire_tip_auto, nr_locuri, id_traseu, id_localitate_inceput, id_localitate_sfarsit, distanta, Localitate_inceput, Localitate_sfarsit, id_raion_inceput, nume_raion_inceput, id_raion_sfarsit, nume_raion_sfarsit FROM Cursa_Full ";
+
+                connection.Open();
+
+                SqlCommand commandSelect = new SqlCommand(querySelect, connection);
+
+                SqlDataReader dataReader = commandSelect.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    curse.Add(new Cursa()
+                    {
+                        id_cursa = (int) dataReader["id_cursa"],
+                        ora = (string) dataReader["ora"],
+                        Automobile = new Automobile()
+                        {
+                            id = (int) dataReader["id_automobil"],
+                            nrInmatriculare = (string) dataReader["nr_inmatriculare"],
+                            tipAutomobil = new TipAutomobil()
+                            {
+                                denumire = (string) dataReader["denumire_tip_auto"],
+                                id = (int) dataReader["id_tip_auto"],
+                                nrLocuri = (int) dataReader["nr_locuri"]
+                            }
+                        },
+                        traseu = new Traseu()
+                        {
+                            id_traseu = (int) dataReader["id_traseu"],
+                            distanta = (int) dataReader["distanta"],
+                            localitate_inceput = new Localitate()
+                            {
+                                id = (int) dataReader["id_localitate_inceput"],
+                                name = (string) dataReader["Localitate_inceput"],
+                                raion = new Raion()
+                                {
+                                    Id = (int) dataReader["id_raion_inceput"],
+                                    Nume = (string) dataReader["nume_raion_inceput"]
+                                }
+                            },
+                            localitate_sfarsit = new Localitate()
+                            {
+                                id = (int) dataReader["id_localitate_sfarsit"],
+                                name = (string) dataReader["Localitate_sfarsit"],
+                                raion = new Raion()
+                                {
+                                    Id = (int) dataReader["id_raion_sfarsit"],
+                                    Nume = (string) dataReader["nume_raion_sfarsit"]
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            return curse;
         }
 
         #endregion

@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Forms;
+
 namespace GaraAuto.forms.addForms
 {
 	partial class addLocalitate
@@ -29,12 +31,12 @@ namespace GaraAuto.forms.addForms
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.label1 = new System.Windows.Forms.Label();
 			this.txt_localitate = new System.Windows.Forms.TextBox();
-			this.txt_raion = new System.Windows.Forms.TextBox();
+			this.cb_raion = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
-			this.pb_raion = new System.Windows.Forms.PictureBox();
 			this.pb_localitate = new System.Windows.Forms.PictureBox();
 			this.pictureBox3 = new System.Windows.Forms.PictureBox();
 			this.txt_id = new System.Windows.Forms.TextBox();
@@ -42,7 +44,7 @@ namespace GaraAuto.forms.addForms
 			this.btn_delete = new System.Windows.Forms.Button();
 			this.btn_primary_add = new System.Windows.Forms.Button();
 			this.controlBarButtons1 = new GaraAuto.forms.commonUserControls.ControlBarButtons();
-			((System.ComponentModel.ISupportInitialize)(this.pb_raion)).BeginInit();
+			this.tooltip_help = new System.Windows.Forms.ToolTip(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.pb_localitate)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
 			this.SuspendLayout();
@@ -67,15 +69,14 @@ namespace GaraAuto.forms.addForms
 			this.txt_localitate.TabIndex = 1;
 			this.txt_localitate.TextChanged += new System.EventHandler(this.txt_localitate_TextChanged);
 			// 
-			// txt_raion
+			// cb_raion
 			// 
-			this.txt_raion.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.txt_raion.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			this.txt_raion.Location = new System.Drawing.Point(218, 225);
-			this.txt_raion.Name = "txt_raion";
-			this.txt_raion.Size = new System.Drawing.Size(232, 24);
-			this.txt_raion.TabIndex = 3;
-			this.txt_raion.TextChanged += new System.EventHandler(this.txt_raion_TextChanged);
+			this.cb_raion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.cb_raion.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.cb_raion.Location = new System.Drawing.Point(218, 225);
+			this.cb_raion.Name = "cb_raion";
+			this.cb_raion.Size = new System.Drawing.Size(232, 30);
+			this.cb_raion.TabIndex = 3;
 			// 
 			// label2
 			// 
@@ -96,16 +97,6 @@ namespace GaraAuto.forms.addForms
 			this.label3.Size = new System.Drawing.Size(239, 31);
 			this.label3.TabIndex = 37;
 			this.label3.Text = "Adauga localitate";
-			// 
-			// pb_raion
-			// 
-			this.pb_raion.Image = global::GaraAuto.Properties.Resources._false;
-			this.pb_raion.Location = new System.Drawing.Point(495, 225);
-			this.pb_raion.Name = "pb_raion";
-			this.pb_raion.Size = new System.Drawing.Size(59, 24);
-			this.pb_raion.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.pb_raion.TabIndex = 40;
-			this.pb_raion.TabStop = false;
 			// 
 			// pb_localitate
 			// 
@@ -135,6 +126,7 @@ namespace GaraAuto.forms.addForms
 			this.txt_id.Name = "txt_id";
 			this.txt_id.Size = new System.Drawing.Size(232, 24);
 			this.txt_id.TabIndex = 49;
+			this.txt_id.TextChanged += txt_idOnTextChanged;
 			// 
 			// label6
 			// 
@@ -188,6 +180,12 @@ namespace GaraAuto.forms.addForms
 			this.controlBarButtons1.Size = new System.Drawing.Size(66, 33);
 			this.controlBarButtons1.TabIndex = 36;
 			// 
+			// tooltip_help
+			// 
+			this.tooltip_help.IsBalloon = true;
+			this.tooltip_help.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+			this.tooltip_help.ToolTipTitle = "Info";
+			// 
 			// addLocalitate
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -200,10 +198,9 @@ namespace GaraAuto.forms.addForms
 			this.Controls.Add(this.txt_id);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.pb_localitate);
-			this.Controls.Add(this.pb_raion);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.controlBarButtons1);
-			this.Controls.Add(this.txt_raion);
+			this.Controls.Add(this.cb_raion);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.txt_localitate);
 			this.Controls.Add(this.label1);
@@ -211,8 +208,6 @@ namespace GaraAuto.forms.addForms
 			this.Name = "addLocalitate";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "addLocalitate";
-			this.Load += new System.EventHandler(this.addLocalitate_Load);
-			((System.ComponentModel.ISupportInitialize)(this.pb_raion)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pb_localitate)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
 			this.ResumeLayout(false);
@@ -224,10 +219,9 @@ namespace GaraAuto.forms.addForms
 
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox txt_localitate;
-		private System.Windows.Forms.TextBox txt_raion;
+		private System.Windows.Forms.ComboBox cb_raion;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.PictureBox pb_raion;
 		private System.Windows.Forms.PictureBox pb_localitate;
 		private System.Windows.Forms.PictureBox pictureBox3;
 		private System.Windows.Forms.TextBox txt_id;
@@ -235,5 +229,6 @@ namespace GaraAuto.forms.addForms
 		private System.Windows.Forms.Button btn_delete;
 		private System.Windows.Forms.Button btn_primary_add;
 		private commonUserControls.ControlBarButtons controlBarButtons1;
+		private ToolTip tooltip_help;
 	}
 }

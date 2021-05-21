@@ -37,3 +37,15 @@ E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.addForms.Ad
 E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.addForms.AddTipAutomobil.resources
 E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.addForms.AddTraseu.resources
 E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.addForms.OcupaLoc.resources
+E:\C#\Labs\GaraAuto\GaraAuto\bin\Debug\net5.0-windows\System.Data.SqlClient.dll
+E:\C#\Labs\GaraAuto\GaraAuto\bin\Debug\net5.0-windows\runtimes\win-arm64\native\sni.dll
+E:\C#\Labs\GaraAuto\GaraAuto\bin\Debug\net5.0-windows\runtimes\win-x64\native\sni.dll
+E:\C#\Labs\GaraAuto\GaraAuto\bin\Debug\net5.0-windows\runtimes\win-x86\native\sni.dll
+E:\C#\Labs\GaraAuto\GaraAuto\bin\Debug\net5.0-windows\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+E:\C#\Labs\GaraAuto\GaraAuto\bin\Debug\net5.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.addForms.SelectTraseu.resources
+E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.addForms.SelectCursa.resources
+E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.auth.login.resources
+E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.auth.Register.resources
+E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.commonUserControls.ActionCardUserControl.resources
+E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.main.MainActionPage.resources

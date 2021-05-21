@@ -1,214 +1,202 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using GaraAuto.db.objects;
 
 namespace GaraAuto.forms.addForms
 {
-	public partial class AddCursa : Form
-	{
-		private List<Automobile> automobile = new List<Automobile>(); 
-		public AddCursa()
-		{
-			InitializeComponent();
-			
-			cb_tip_auto.SelectedValueChanged += cb_automobilOnSelectedValueChanged;
+    public partial class AddCursa : Form
+    {
+        private List<Automobile> automobile = new List<Automobile>();
+        private List<TipAutomobil> tipuri = new List<TipAutomobil>();
+        private List<Cursa> curse = new List<Cursa>();
+        private bool exists = false;
+        private bool isTraseuValid = false;
+        private bool isCarValid = false;
+        private Traseu SelectedTraseu;
 
-			addAutoCompleteStrings();
-			textBox1.Click += textBox1OnClick;
-			btn_primary_add.Click += btn_primary_addOnClick;
-		}
+        public AddCursa()
+        {
+            InitializeComponent();
 
-		private void btn_primary_addOnClick(object sender, EventArgs e)
-		{
-			TipAutomobil tip = new TipAutomobil()
-			{
-				denumire = cb_tip_auto.Text
-			};
-			tip.read();
+            new Thread(() => curse = new Cursa().getAll()).Start();
 
-			Localitate localitate_inceput = new Localitate()
-			{
-				name = textBox1.Text.Trim().Split("-")[0].Trim()
-			};
-			localitate_inceput.read();
-			
-			// MessageBox.Show("_" + textBox1.Text.Trim().Split("-")[0].Trim() + "_");
-			
-			
-			Localitate localitate_sfarsit = new Localitate()
-			{
-				name = textBox1.Text.Trim().Split("-")[1].Trim()
-			};
-			localitate_sfarsit.read();
-			
-			Traseu traseu = new Traseu()
-			{
-				localitate_inceput = localitate_inceput,
-				localitate_sfarsit = localitate_sfarsit
-			};
-			traseu.read();
-			
-			MessageBox.Show(localitate_inceput.id.ToString());
-			MessageBox.Show(localitate_sfarsit.id.ToString());
-			MessageBox.Show(traseu.ToString());
+            cb_tip_auto.SelectedValueChanged += cb_tip_automobilOnSelectedValueChanged;
+            cb_automobil.SelectedValueChanged += cb_automobilOnSelectedValueChanged;
+            textBox1.Click += textBox1OnClick;
 
-			Automobile automobil = new Automobile()
-			{
-				nrInmatriculare = cb_automobil.Text,
-				tipAutomobil = tip
-			};
-			automobil.read();
-			
-			
-			Cursa cursa = new Cursa()
-			{
-				Automobile = automobil,
-				traseu = traseu,
-				ora = cb_ora.Text
-			};
-			cursa.create();
-		}
+            btn_delete.Visible = false;
 
-		private void textBox1OnClick(object sender, EventArgs e)
-		{
-			SelectTraseu st;
-			if (cb_ora.SelectedText != "")
-			{
-				st = new SelectTraseu(Convert.ToInt32(cb_ora.SelectedText));
-			}
-			else
-			{
-				st = new SelectTraseu();
-			}
+            addAutoCompleteStrings();
+        }
 
-			st.Closed += (o, args) =>
-			{
-				textBox1.Text = st.SelectedTraseu;
-			};
-			st.ShowDialog();
+        private void cb_automobilOnSelectedValueChanged(object sender, EventArgs e)
+        {
+            isCarValid = true;
+        }
 
-		}
+        private void textBox1OnClick(object sender, EventArgs e)
+        {
+            SelectTraseu st = new SelectTraseu();
 
-		private void cb_automobilOnSelectedValueChanged(object sender, EventArgs e)
-		{
-			cb_automobil.Items.Clear();
-			cb_automobil.Text = "";
-			automobile.ForEach(auto =>
-			{
-				if (auto.tipAutomobil.denumire.Equals(cb_tip_auto.Text))
-				{
-					cb_automobil.Items.Add(auto.nrInmatriculare);
-				}
-			});
-		}
+            st.Closed += (o, args) =>
+            {
+                SelectedTraseu = st.SelectedTraseu;
+                textBox1.Text = SelectedTraseu.denumire;
+                isTraseuValid = true;
 
-		private void addAutoCompleteStrings()
-		{
-			AutoCompleteStringCollection acsc_tip_auto = new AutoCompleteStringCollection();
-			AutoCompleteStringCollection acsc_auto = new AutoCompleteStringCollection();
+                pb_traseu.Image = DefaultProperties.iconTrueImage;
+            };
+            st.ShowDialog();
+        }
 
-			automobile = new Automobile().getAll();
-			automobile.ForEach(automobil =>
-			{
-				cb_automobil.Items.Add(automobil.nrInmatriculare);
-				acsc_auto.Add(automobil.nrInmatriculare);
-			});
-			
-			new TipAutomobil().getAll().ForEach(tip_auto =>
-			{
-				cb_tip_auto.Items.Add(tip_auto.denumire);
-				acsc_tip_auto.Add(tip_auto.denumire);
-			});
+        private void cb_tip_automobilOnSelectedValueChanged(object sender, EventArgs e)
+        {
+            cb_automobil.Items.Clear();
+            cb_automobil.Text = "";
+            automobile.ForEach(auto =>
+            {
+                if (auto.tipAutomobil.denumire.Equals(cb_tip_auto.Text))
+                {
+                    cb_automobil.Items.Add(auto.nrInmatriculare);
+                }
+            });
+        }
 
-			cb_automobil.AutoCompleteMode = AutoCompleteMode.Suggest;
-			cb_automobil.AutoCompleteSource = AutoCompleteSource.CustomSource;
-			cb_automobil.AutoCompleteCustomSource = acsc_auto;
-			
-			cb_tip_auto.AutoCompleteMode = AutoCompleteMode.Suggest;
-			cb_tip_auto.AutoCompleteSource = AutoCompleteSource.CustomSource;
-			cb_tip_auto.AutoCompleteCustomSource = acsc_tip_auto;
+        private void addAutoCompleteStrings()
+        {
+            AutoCompleteStringCollection acsc_tip_auto = new AutoCompleteStringCollection();
+            AutoCompleteStringCollection acsc_auto = new AutoCompleteStringCollection();
 
-			addClockItems();
-		}
-		
-		
-		private void addClockItems()
-		{
-			//TODO: Replace cmBox with textbox 
-			cb_ora.MaxDropDownItems = 10;
-			
-			DateTime item = DateTime.Today.AddHours(5); // 14:00:00
-			while(item <= DateTime.Today.AddHours(22)) // 16:00:00
-			{
-				cb_ora.Items.Add(item.TimeOfDay.ToString(@"hh\:mm"));
-				item = item.AddMinutes(10);
-			}
-		}
+            automobile = new Automobile().getAll();
+            automobile.ForEach(automobil =>
+            {
+                cb_automobil.Items.Add(automobil.nrInmatriculare);
+                acsc_auto.Add(automobil.nrInmatriculare);
+            });
 
-		private void label4_Click(object sender, EventArgs e)
-		{
+            tipuri = new TipAutomobil().getAll();
+            tipuri.ForEach(tip_auto =>
+            {
+                cb_tip_auto.Items.Add(tip_auto.denumire);
+                acsc_tip_auto.Add(tip_auto.denumire);
+            });
 
-		}
+            cb_automobil.AutoCompleteMode = AutoCompleteMode.Suggest;
+            cb_automobil.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            cb_automobil.AutoCompleteCustomSource = acsc_auto;
 
-		private void cb_traseu_SelectedIndexChanged(object sender, EventArgs e)
-		{
+            cb_tip_auto.AutoCompleteMode = AutoCompleteMode.Suggest;
+            cb_tip_auto.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            cb_tip_auto.AutoCompleteCustomSource = acsc_tip_auto;
+        }
 
-		}
 
-		private void cb_automobil_SelectedIndexChanged(object sender, EventArgs e)
-		{
+        private void txt_id_TextChanged(object sender, EventArgs e)
+        {
+            checkIfExists();
+        }
 
-		}
+        private void checkIfExists()
+        {
+            Cursa cursa = curse.FirstOrDefault(curs => curs.id_cursa.ToString() == txt_id.Text);
+            if (cursa != null)
+            {
+                exists = true;
+                btn_delete.Visible = true;
+                btn_primary_add.Text = DefaultProperties.btn_update_text;
+                btn_primary_add.BackColor = DefaultProperties.defaultInfoButtonColor;
+                btn_primary_add.Image = DefaultProperties.buttonInfoWhiteImage;
+                writeFromDb();
+            }
+            else
+            {
+                exists = false;
+                btn_delete.Visible = false;
+                btn_primary_add.Text = DefaultProperties.btn_add_text;
+                btn_primary_add.BackColor = DefaultProperties.defaultPrimaryButtonColor;
+                btn_primary_add.Image = DefaultProperties.buttonPrimaryWhiteImage;
+            }
+        }
 
-		private void label2_Click(object sender, EventArgs e)
-		{
+        private void writeFromDb()
+        {
+            Cursa cursa = curse.FirstOrDefault(curs => curs.id_cursa.ToString() == txt_id.Text);
+            if (cursa != null)
+            {
+                isTraseuValid = true;
+                textBox1.Text = cursa.traseu.denumire;
 
-		}
+                nud_ora.Value = Convert.ToDecimal(cursa.ora.Split(':')[0]);
+                nud_minute.Value = Convert.ToDecimal(cursa.ora.Split(':')[1]);
 
-		private void cb_ora_SelectedIndexChanged(object sender, EventArgs e)
-		{
+                for (var i = 0; i < cb_tip_auto.Items.Count; i++)
+                    if (cb_tip_auto.Items[i].ToString() == cursa.Automobile.tipAutomobil.denumire)
+                        cb_tip_auto.SelectedIndex = i;
 
-		}
+                for (var i = 0; i < cb_automobil.Items.Count; i++)
+                    if (cb_automobil.Items[i].ToString() == cursa.Automobile.nrInmatriculare)
+                        cb_automobil.SelectedIndex = i;
+                
+                SelectedTraseu = cursa.traseu;
+            }
+            else
+            {
+                isTraseuValid = false;
+                nud_ora.Value = 8;
+                nud_minute.Value = 0;
+                cb_tip_auto.SelectedIndex = 0;
+                textBox1.Text = "Selecteaza";
+                cb_automobil.SelectedIndex = 0;
+            }
+        }
 
-		private void label5_Click(object sender, EventArgs e)
-		{
 
-		}
+        private void btn_primary_add_Click(object sender, EventArgs e)
+        {
+            if (isCarValid && isTraseuValid)
+            {
+                TipAutomobil tip = tipuri.Find(tip => tip.denumire == cb_tip_auto.Text);
 
-		private void cb_loc_inceput_SelectedIndexChanged(object sender, EventArgs e)
-		{
 
-		}
+                Automobile automobil = automobile.Find(auto => auto.nrInmatriculare == cb_automobil.Text);
 
-		private void label1_Click(object sender, EventArgs e)
-		{
 
-		}
+                Cursa cursa = new Cursa()
+                {
+                    Automobile = automobil,
+                    traseu = SelectedTraseu,
+                    ora = nud_ora.Value + ":" + nud_minute.Value
+                };
+                
+                if (!exists) cursa.create();
+                else
+                {
+                    cursa.id_cursa = Convert.ToInt32(txt_id.Text);
+                    cursa.update();
+                }
 
-		private void AddCursa_Load(object sender, EventArgs e)
-		{
+                txt_id.Text = cursa.id_cursa.ToString();
 
-		}
+                curse.RemoveAll(curs => curs.id_cursa == cursa.id_cursa);
+                curse.Add(cursa);
+                checkIfExists();
+            }
+        }
 
-		private void label6_Click(object sender, EventArgs e)
-		{
+        private void btn_delete_Click(object sender, EventArgs e)
+        {
+            Cursa cursa = new Cursa()
+            {
+                id_cursa = Convert.ToInt32(txt_id.Text)
+            };
+            
+            cursa.delete();
 
-		}
-
-		private void txt_id_TextChanged(object sender, EventArgs e)
-		{
-
-		}
-
-		private void btn_primary_add_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void btn_delete_Click(object sender, EventArgs e)
-		{
-
-		}
-	}
+            curse.RemoveAll(curs => curs.id_cursa == cursa.id_cursa);
+            checkIfExists();
+        }
+    }
 }

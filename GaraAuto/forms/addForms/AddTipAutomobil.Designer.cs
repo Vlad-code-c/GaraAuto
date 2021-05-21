@@ -29,6 +29,7 @@ namespace GaraAuto.forms.addForms
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.txt_denumire = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
@@ -41,6 +42,7 @@ namespace GaraAuto.forms.addForms
 			this.label6 = new System.Windows.Forms.Label();
 			this.btn_delete = new System.Windows.Forms.Button();
 			this.btn_primary_add = new System.Windows.Forms.Button();
+			this.tooltip_help = new System.Windows.Forms.ToolTip(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pb_denumire)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -185,6 +187,12 @@ namespace GaraAuto.forms.addForms
 			this.btn_primary_add.UseVisualStyleBackColor = false;
 			this.btn_primary_add.Click += new System.EventHandler(this.btn_primary_add_Click_1);
 			// 
+			// tooltip_help
+			// 
+			this.tooltip_help.IsBalloon = true;
+			this.tooltip_help.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+			this.tooltip_help.ToolTipTitle = "Info";
+			// 
 			// AddTipAutomobil
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -207,6 +215,7 @@ namespace GaraAuto.forms.addForms
 			this.Name = "AddTipAutomobil";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "AddTipAutomobil";
+			this.Load += new System.EventHandler(this.AddTipAutomobil_Load);
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pb_denumire)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
@@ -229,5 +238,6 @@ namespace GaraAuto.forms.addForms
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Button btn_delete;
 		private System.Windows.Forms.Button btn_primary_add;
+		private System.Windows.Forms.ToolTip tooltip_help;
 	}
 }

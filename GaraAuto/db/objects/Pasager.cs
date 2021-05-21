@@ -12,12 +12,22 @@ namespace GaraAuto.db.objects
         
         public override void create()
         {
-            DatabaseManager.getInstance().CreatePasager(this);
+            Pasager pasager = DatabaseManager.getInstance().CreatePasager(this);
+            if (pasager != null)
+            {
+                this.nume_prenume = pasager.nume_prenume;
+                this.birth_year = pasager.birth_year;
+            }
         }
 
         public override void read()
         {
-            DatabaseManager.getInstance().ReadPasager(this);
+            Pasager pasager = DatabaseManager.getInstance().ReadPasager(this);
+            if (pasager != null)
+            {
+                this.nume_prenume = pasager.nume_prenume;
+                this.birth_year = pasager.birth_year;
+            }
         }
 
         public override void update()

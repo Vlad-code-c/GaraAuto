@@ -93,16 +93,16 @@ CREATE TABLE Cursa
     ora          time,
 
     constraint id_traseu_fk foreign key (id_traseu) references Traseu (id_traseu),
-    constraint id_automobile_fk foreign key (id_automobil) references Automobile (id),
-    constraint unique (id_traseu, id_automobil)
+    constraint id_automobile_fk foreign key (id_automobil) references Automobile (id)
 );
+
 CREATE OR ALTER VIEW Cursa_Full AS
 SELECT C.id_cursa,
        C.id_automobil,
        C.ora,
-       A.id AS 'id_auto',
+       A.id        AS 'id_auto',
        A.nr_inmatriculare,
-       Ta.id AS 'id_tip_auto',
+       Ta.id       AS 'id_tip_auto',
        TA.denumire AS 'denumire_tip_auto',
        TA.nr_locuri,
        T.id_traseu,
@@ -123,7 +123,8 @@ WHERE C.id_traseu = T.id_traseu
   AND A.tip_automobil = TA.id
   AND C.id_automobil = A.id
 
-SELECT * FROM Traseu_Full
+SELECT *
+FROM Traseu_Full
 -- ALTER TABLE Cursa ADD unique (id_traseu, id_automobil)
 
 CREATE TABLE Pasager
@@ -142,3 +143,58 @@ CREATE TABLE LocuriOcupate
     constraint id_cursa_fk foreign key (id_cursa) references Cursa (id_cursa),
     constraint id_pasager_fk foreign key (id_pasager) references Pasager (idnp)
 );
+
+CREATE TABLE Roles(
+    id_role int primary key identity,
+    role nvarchar(15)
+);
+
+CREATE TABLE Users
+(
+    id_user  int primary key identity,
+    email    nvarchar(50) unique,
+    password nvarchar(50)
+);
+
+CREATE TABLE UsersRoles (
+    id_user int,
+    id_role int,
+    
+    constraint pk_userRoles primary key (id_user, id_role),
+    constraint fk_user foreign key (id_user) references Users(id_user),
+    constraint fk_role foreign key (id_role) references Roles(id_role)
+)
+
+
+
+CREATE TABLE CreatedPasager (
+    
+)
+
+
+create trigger trigger_user_role_add
+    on Users
+    after insert
+    as
+begin
+    DECLARE @id int
+    DECLARE @email nvarchar(50)
+    DECLARE @pass nvarchar(50)
+
+    DECLARE cursor_users CURSOR
+        FOR SELECT inserted.id_user, inserted.email, inserted.email FROM inserted
+
+    OPEN cursor_users
+
+    FETCH NEXT FROM cursor_users INTO @id, @email, @pass
+
+    WHILE @@FETCH_STATUS = 0
+        BEGIN
+            INSERT INTO UsersRoles (id_user, id_role)  VALUES (@id, 1)
+            FETCH NEXT FROM cursor_users INTO @id, @email, @pass
+        END
+
+    CLOSE cursor_users
+    DEALLOCATE cursor_users
+
+end

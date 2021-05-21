@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using GaraAuto.db.objects;
 
@@ -15,9 +10,10 @@ namespace GaraAuto.forms.addForms
     public partial class AddTipAutomobil : Form
     {
         private List<TipAutomobil> tipuri = new List<TipAutomobil>();
+        private bool isValid = false;
         private bool isIdValid = false;
-        private bool isDenumValid = false;
-
+        private bool exists = false;
+        
         private bool closeAfter;
 
         public AddTipAutomobil(bool closeAfter = false, string name = "")
@@ -40,7 +36,7 @@ namespace GaraAuto.forms.addForms
 
         private void txt_denumireOnTextChanged(object sender, EventArgs e)
         {
-            checkIfExists();
+            validateTextBox();
         }
 
 
@@ -51,25 +47,18 @@ namespace GaraAuto.forms.addForms
 
         private void checkIfExists()
         {
-            if (Validator.isValidDenumireTipAuto(txt_denumire.Text))
-            {
-                isDenumValid = true;
-                pb_denumire.Image = DefaultProperties.iconTrueImage;
-            }
-            else
-            {
-                pb_denumire.Image = DefaultProperties.iconFalseImage;
-                isDenumValid = false;
-            }
+            TipAutomobil tipAutomobil = tipuri.FirstOrDefault(tip => tip.id.ToString() == txt_id.Text);
 
-
-            if (tipuri.FirstOrDefault(tip => tip.id.ToString() == txt_id.Text) != null)
+            if (tipAutomobil != null)
             {
                 btn_delete.Visible = true;
                 btn_primary_add.BackColor = DefaultProperties.defaultInfoButtonColor;
                 btn_primary_add.Image = DefaultProperties.buttonInfoWhiteImage;
                 btn_primary_add.Text = "Update";
-                isIdValid = false;
+                exists = true;
+                
+                txt_denumire.Text = tipAutomobil.denumire;
+                numericUpDown1.Value = tipAutomobil.nrLocuri;
             }
             else
             {
@@ -77,7 +66,23 @@ namespace GaraAuto.forms.addForms
                 btn_primary_add.BackColor = DefaultProperties.defaultPrimaryButtonColor;
                 btn_primary_add.Image = DefaultProperties.buttonPrimaryWhiteImage;
                 btn_primary_add.Text = "Adauga";
-                isIdValid = true;
+                exists = false;
+            }
+
+            validateTextBox();
+        }
+
+        private void validateTextBox()
+        {
+            if (Validator.isValidDenumireTipAuto(txt_denumire.Text))
+            {
+                pb_denumire.Image = DefaultProperties.iconTrueImage;
+                isValid = true;
+            }
+            else
+            {
+                pb_denumire.Image = DefaultProperties.iconFalseImage;
+                isValid = false;
             }
         }
 
@@ -95,8 +100,10 @@ namespace GaraAuto.forms.addForms
 
         private void btn_primary_add_Click_1(object sender, EventArgs e)
         {
-            if (tipuri.FirstOrDefault(tip => tip.id.ToString() == txt_id.Text) != null)
+            if (exists)
             {
+                if (!isValid) return;
+                
                 TipAutomobil tipAutomobil_upd = new TipAutomobil()
                 {
                     id = Convert.ToInt32(txt_id.Text),
@@ -113,6 +120,7 @@ namespace GaraAuto.forms.addForms
                 nrLocuri = (int) numericUpDown1.Value
             };
             tipAutomobil.create();
+            txt_id.Text = tipAutomobil.id.ToString();
             tipuri.Add(tipAutomobil);
 
             checkIfExists();
@@ -125,13 +133,19 @@ namespace GaraAuto.forms.addForms
 
         private void btn_delete_Click(object sender, EventArgs e)
         {
-            if (isIdValid) return;
-
             TipAutomobil tipAutomobil_upd = new TipAutomobil()
             {
                 id = Convert.ToInt32(txt_id.Text)
             };
             tipAutomobil_upd.delete();
+
+            tipuri.RemoveAll(tip => tip.id == tipAutomobil_upd.id);
+            checkIfExists();
         }
-    }
+
+		private void AddTipAutomobil_Load(object sender, EventArgs e)
+		{
+
+		}
+	}
 }

@@ -53,9 +53,34 @@ VALUES (4, 1);
 
 INSERT INTO Pasager (idnp, nume_prenume, birth_year)
 VALUES (2002200220020, 'Stici Vlad', 2002),
+       (2002200220024, 'Bolsoi Valentina', 2002),
+       (2002200220025, 'Covrig Petru', 2002),
        (2002200220021, 'Gherasim Elena', 2002),
        (2002200220022, 'Crozu Stas', 2002),
        (2002200220023, 'Chitic Daniel', 2001);
 
 INSERT INTO LocuriOcupate (id_cursa, id_pasager)
-VALUES (3, 2002200220020);
+VALUES (1, 2002200220020);
+
+
+INSERT INTO Roles(role)
+VALUES ('USER'), ('ADMIN'), ('MODERATOR'), ('DEVELOPER')
+
+INSERT INTO Users (email, password) 
+VALUES ('vladz1992b@gmail.com', '12345'),
+       ('elenagherasim@gmail.com', 'qwerty'),
+       ('stascrozu@gmail.com', 'zxcvb')
+
+
+INSERT INTO UsersRoles
+VALUES (1, 1),
+       (1, 2),
+       (1, 3),
+       (1, 4),
+       (2, 1),
+       (2, 3),
+       (3, 1);
+
+INSERT INTO Users (email, password) VALUES ('email@gmail.com', '12345')
+
+

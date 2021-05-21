@@ -29,6 +29,7 @@ namespace GaraAuto.forms.addForms
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.cb_start = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
@@ -38,16 +39,15 @@ namespace GaraAuto.forms.addForms
 			this.label4 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.customNumericUpDown1 = new GaraAuto.forms.commonUserControls.CustomNumericUpDown();
-			this.pb_inceput = new System.Windows.Forms.PictureBox();
-			this.pb_sfarsit = new System.Windows.Forms.PictureBox();
-			this.pb_denumire = new System.Windows.Forms.PictureBox();
 			this.btn_delete = new System.Windows.Forms.Button();
 			this.btn_primary_add = new System.Windows.Forms.Button();
 			this.controlBarButtons1 = new GaraAuto.forms.commonUserControls.ControlBarButtons();
+			this.label6 = new System.Windows.Forms.Label();
+			this.txt_id = new System.Windows.Forms.TextBox();
+			this.pictureBox3 = new System.Windows.Forms.PictureBox();
+			this.tooltip_help = new System.Windows.Forms.ToolTip(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.customNumericUpDown1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pb_inceput)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pb_sfarsit)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pb_denumire)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// cb_start
@@ -74,11 +74,11 @@ namespace GaraAuto.forms.addForms
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("Century Gothic", 18.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			this.label3.Location = new System.Drawing.Point(213, 14);
+			this.label3.Location = new System.Drawing.Point(259, 14);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(197, 31);
+			this.label3.Size = new System.Drawing.Size(91, 31);
 			this.label3.TabIndex = 17;
-			this.label3.Text = "Adauga traseu";
+			this.label3.Text = "Traseu";
 			// 
 			// txt_denumire
 			// 
@@ -89,7 +89,6 @@ namespace GaraAuto.forms.addForms
 			this.txt_denumire.Name = "txt_denumire";
 			this.txt_denumire.Size = new System.Drawing.Size(232, 24);
 			this.txt_denumire.TabIndex = 15;
-			this.txt_denumire.TextChanged += new System.EventHandler(this.txt_denumire_TextChanged);
 			// 
 			// label1
 			// 
@@ -100,7 +99,7 @@ namespace GaraAuto.forms.addForms
 			this.label1.Size = new System.Drawing.Size(98, 22);
 			this.label1.TabIndex = 14;
 			this.label1.Text = "Denumire";
-			this.label1.Click += new System.EventHandler(this.label1_Click);
+
 			// 
 			// cb_finish
 			// 
@@ -155,37 +154,6 @@ namespace GaraAuto.forms.addForms
             0,
             0});
 			// 
-			// pb_inceput
-			// 
-			this.pb_inceput.Image = global::GaraAuto.Properties.Resources._false;
-			this.pb_inceput.Location = new System.Drawing.Point(534, 124);
-			this.pb_inceput.Name = "pb_inceput";
-			this.pb_inceput.Size = new System.Drawing.Size(59, 30);
-			this.pb_inceput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.pb_inceput.TabIndex = 44;
-			this.pb_inceput.TabStop = false;
-			this.pb_inceput.Click += new System.EventHandler(this.pictureBox2_Click);
-			// 
-			// pb_sfarsit
-			// 
-			this.pb_sfarsit.Image = global::GaraAuto.Properties.Resources._false;
-			this.pb_sfarsit.Location = new System.Drawing.Point(534, 177);
-			this.pb_sfarsit.Name = "pb_sfarsit";
-			this.pb_sfarsit.Size = new System.Drawing.Size(59, 30);
-			this.pb_sfarsit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.pb_sfarsit.TabIndex = 45;
-			this.pb_sfarsit.TabStop = false;
-			// 
-			// pb_denumire
-			// 
-			this.pb_denumire.Image = global::GaraAuto.Properties.Resources._false;
-			this.pb_denumire.Location = new System.Drawing.Point(534, 275);
-			this.pb_denumire.Name = "pb_denumire";
-			this.pb_denumire.Size = new System.Drawing.Size(59, 24);
-			this.pb_denumire.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.pb_denumire.TabIndex = 46;
-			this.pb_denumire.TabStop = false;
-			// 
 			// btn_delete
 			// 
 			this.btn_delete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(86)))), ((int)(((byte)(80)))));
@@ -227,17 +195,52 @@ namespace GaraAuto.forms.addForms
 			this.controlBarButtons1.Size = new System.Drawing.Size(66, 33);
 			this.controlBarButtons1.TabIndex = 36;
 			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.label6.Location = new System.Drawing.Point(85, 86);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(91, 22);
+			this.label6.TabIndex = 55;
+			this.label6.Text = "Id Traseu";
+			// 
+			// txt_id
+			// 
+			this.txt_id.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txt_id.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.txt_id.Location = new System.Drawing.Point(259, 84);
+			this.txt_id.Name = "txt_id";
+			this.txt_id.Size = new System.Drawing.Size(231, 24);
+			this.txt_id.TabIndex = 56;
+			// 
+			// pictureBox3
+			// 
+			this.pictureBox3.Image = global::GaraAuto.Properties.Resources.question;
+			this.pictureBox3.Location = new System.Drawing.Point(541, 84);
+			this.pictureBox3.Name = "pictureBox3";
+			this.pictureBox3.Size = new System.Drawing.Size(59, 24);
+			this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.pictureBox3.TabIndex = 57;
+			this.pictureBox3.TabStop = false;
+			// 
+			// tooltip_help
+			// 
+			this.tooltip_help.IsBalloon = true;
+			this.tooltip_help.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+			this.tooltip_help.ToolTipTitle = "Info";
+			// 
 			// AddTraseu
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(226)))), ((int)(((byte)(220)))));
 			this.ClientSize = new System.Drawing.Size(628, 451);
+			this.Controls.Add(this.pictureBox3);
+			this.Controls.Add(this.txt_id);
+			this.Controls.Add(this.label6);
 			this.Controls.Add(this.btn_delete);
 			this.Controls.Add(this.btn_primary_add);
-			this.Controls.Add(this.pb_denumire);
-			this.Controls.Add(this.pb_sfarsit);
-			this.Controls.Add(this.pb_inceput);
 			this.Controls.Add(this.customNumericUpDown1);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.controlBarButtons1);
@@ -253,9 +256,7 @@ namespace GaraAuto.forms.addForms
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "AddTraseu";
 			((System.ComponentModel.ISupportInitialize)(this.customNumericUpDown1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pb_inceput)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pb_sfarsit)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pb_denumire)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -272,11 +273,12 @@ namespace GaraAuto.forms.addForms
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label label5;
 		private commonUserControls.CustomNumericUpDown customNumericUpDown1;
-		private System.Windows.Forms.PictureBox pb_inceput;
-		private System.Windows.Forms.PictureBox pb_sfarsit;
-		private System.Windows.Forms.PictureBox pb_denumire;
 		private System.Windows.Forms.Button btn_delete;
 		private System.Windows.Forms.Button btn_primary_add;
 		private commonUserControls.ControlBarButtons controlBarButtons1;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.TextBox txt_id;
+		private System.Windows.Forms.PictureBox pictureBox3;
+		private System.Windows.Forms.ToolTip tooltip_help;
 	}
 }

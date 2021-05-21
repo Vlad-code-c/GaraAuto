@@ -14,7 +14,14 @@ namespace GaraAuto.db.objects
         
         public override void create()
         {
-            DatabaseManager.getInstance().CreateCursa(this);
+            Cursa cursa = DatabaseManager.getInstance().CreateCursa(this);
+            if (cursa != null)
+            {
+                this.id_cursa = cursa.id_cursa;
+                this.ora = cursa.ora;
+                this.traseu = cursa.traseu;
+                this.Automobile = cursa.Automobile;
+            }
         }
 
         public override void read()

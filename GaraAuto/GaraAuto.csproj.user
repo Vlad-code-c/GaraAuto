@@ -28,8 +28,26 @@
     <Compile Update="forms\addForms\OcupaLoc.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="forms\addForms\SelectCursa.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\addForms\SelectTraseu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\auth\login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\auth\Register.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\commonUserControls\ActionCardUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="forms\commonUserControls\ControlBarButtons.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="forms\commonUserControls\CustomNumericUpDown.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Update="forms\controlGenerator\controls\CheckboxControl.cs">
       <SubType>Component</SubType>
@@ -44,6 +62,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="forms\formGenerator\FormGenerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\main\MainActionPage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="forms\test\FormsBuilder.cs">

@@ -27,6 +27,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Update="forms\auth\login.cs" />
   </ItemGroup>
 
   <ItemGroup>

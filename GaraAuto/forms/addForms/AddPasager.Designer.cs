@@ -29,6 +29,7 @@ namespace GaraAuto.forms.addForms
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.label3 = new System.Windows.Forms.Label();
 			this.txt_name = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
@@ -44,6 +45,7 @@ namespace GaraAuto.forms.addForms
 			this.pb_prenume = new System.Windows.Forms.PictureBox();
 			this.btn_delete = new System.Windows.Forms.Button();
 			this.btn_primary_add = new System.Windows.Forms.Button();
+			this.tooltip_help = new System.Windows.Forms.ToolTip(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pb_idnp)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pb_nume)).BeginInit();
@@ -68,6 +70,7 @@ namespace GaraAuto.forms.addForms
 			this.txt_name.Name = "txt_name";
 			this.txt_name.Size = new System.Drawing.Size(154, 24);
 			this.txt_name.TabIndex = 13;
+			this.txt_name.TextChanged += txt_nameOnTextChanged;
 			// 
 			// label1
 			// 
@@ -87,6 +90,7 @@ namespace GaraAuto.forms.addForms
 			this.txt_surname.Name = "txt_surname";
 			this.txt_surname.Size = new System.Drawing.Size(154, 24);
 			this.txt_surname.TabIndex = 17;
+			this.txt_surname.TextChanged += txt_surnameOnTextChanged;
 			// 
 			// label2
 			// 
@@ -140,6 +144,7 @@ namespace GaraAuto.forms.addForms
 			this.txt_idnp.Name = "txt_idnp";
 			this.txt_idnp.Size = new System.Drawing.Size(154, 24);
 			this.txt_idnp.TabIndex = 21;
+			this.txt_idnp.TextChanged += txt_idnpOnTextChanged;
 			// 
 			// label5
 			// 
@@ -223,6 +228,12 @@ namespace GaraAuto.forms.addForms
 			this.btn_primary_add.UseVisualStyleBackColor = false;
 			this.btn_primary_add.Click += new System.EventHandler(this.btn_primary_add_Click);
 			// 
+			// tooltip_help
+			// 
+			this.tooltip_help.IsBalloon = true;
+			this.tooltip_help.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+			this.tooltip_help.ToolTipTitle = "Info";
+			// 
 			// AddPasager
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -274,5 +285,6 @@ namespace GaraAuto.forms.addForms
 		private System.Windows.Forms.PictureBox pb_prenume;
 		private System.Windows.Forms.Button btn_delete;
 		private System.Windows.Forms.Button btn_primary_add;
+		private System.Windows.Forms.ToolTip tooltip_help;
 	}
 }

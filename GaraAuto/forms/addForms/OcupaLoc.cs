@@ -16,10 +16,39 @@ namespace GaraAuto.forms.addForms
 	{
 		private List<Pasager> pasageri = new List<Pasager>();
 		private Cursa SelectedCursa;
+		private bool existsPasager;
 		public OcupaLoc()
 		{
 			InitializeComponent();
 			txt_cursa.Click += txt_cursa_Click;
+			txt_pasager.TextChanged += txt_pasagerOnTextChanged;
+
+			txt_pasagerName.Enabled = false;
+			txt_pasagerName.Visible = false;
+			label3.Visible = false;
+
+		}
+
+		private void txt_pasagerOnTextChanged(object sender, EventArgs e)
+		{
+			Pasager pasager = pasageri.FirstOrDefault(pasager => pasager.idnp.ToString() == txt_pasager.Text);
+			if (pasager != null)
+			{
+				pb_pasager.Image = DefaultProperties.iconTrueImage;
+				existsPasager = true;
+				txt_pasagerName.Text = pasager.nume_prenume;
+
+				txt_pasagerName.Visible = true;
+				label3.Visible = true;
+			}
+			else
+			{
+				pb_pasager.Image = DefaultProperties.iconFalseImage;
+				existsPasager = false;
+				txt_pasagerName.Text = "";
+				txt_pasagerName.Visible = false;
+				label3.Visible = false;
+			}
 		}
 
 		private void txt_cursa_Click(object sender, EventArgs e)
@@ -38,21 +67,30 @@ namespace GaraAuto.forms.addForms
 			};
 			sc.ShowDialog();
 		}
-
-
+		
 		private void txt_cursa_TextChanged(object sender, EventArgs e)
 		{
-
+			pb_cursa.Image = DefaultProperties.iconTrueImage;
 		}
 
 		private void btn_primary_add_Click(object sender, EventArgs e)
 		{
+			if (SelectedCursa != null && existsPasager)
+			{
+				Pasager pasager = new Pasager()
+				{
+					idnp = Convert.ToInt64(txt_pasager.Text)
+				};
+				pasager.read();
 
-		}
-
-		private void btn_delete_Click(object sender, EventArgs e)
-		{
-
+				LocuriOcupate loc = new LocuriOcupate()
+				{
+					cursa = SelectedCursa,
+					pasager = pasager
+				};
+				
+				loc.create();
+			}
 		}
 	}
 }

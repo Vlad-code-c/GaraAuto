@@ -20,14 +20,19 @@ namespace GaraAuto.forms.addForms
 
             new Thread(() => { automobile = new Automobile().getAll(); }).Start();
 
-            tooltip_help.SetToolTip(pictureBox3, "Id-ul va fi folosit pentru a actualiza sau sterge datele");
 
             addAutoCompleteStrings();
 
             btn_delete.Visible = false;
             
-            txt_nrInmatriculare.TextChanged += (o, s) => checkIfExists();
+            txt_nrInmatriculare.TextChanged += (o, s) =>
+            {
+                checkIfExists();
+                validateTextbox();
+                readFromDb();
+            };
             cb_tipAutomobil.SelectedValueChanged += cb_tipAutomobilOnSelectedValueChanged;
+
         }
 
         private void cb_tipAutomobilOnSelectedValueChanged(object sender, EventArgs e)
@@ -37,10 +42,31 @@ namespace GaraAuto.forms.addForms
             cb_tipAutomobil.SelectedValueChanged -= cb_tipAutomobilOnSelectedValueChanged;
         }
 
+        private void readFromDb()
+        {
+            Automobile automobil = automobile.FirstOrDefault(auto => auto.nrInmatriculare == txt_nrInmatriculare.Text);
+
+            if (automobil == null)
+            {
+                
+                return;
+            }
+
+            for (int i = 0; i < cb_tipAutomobil.Items.Count; i++)
+            {
+                if ((string) cb_tipAutomobil.Items[i] == automobil.tipAutomobil.denumire)
+                {
+                    cb_tipAutomobil.SelectedIndex = i;
+                    return;
+                }
+            }
+        }
+        
         private void checkIfExists()
         {
             Automobile firstOrDefault =
                 automobile.FirstOrDefault(auto => auto.nrInmatriculare == txt_nrInmatriculare.Text);
+            
             if (firstOrDefault != null)
             {
                 btn_delete.Visible = true;
@@ -57,7 +83,11 @@ namespace GaraAuto.forms.addForms
                 btn_primary_add.Text = "Adauga";
                 exists = false;
             }
+            
+        }
 
+        private void validateTextbox()
+        {
             if (Validator.isValidNrInmatriculare(txt_nrInmatriculare.Text))
             {
                 pb_nr_inmatric.Image = DefaultProperties.iconTrueImage;
@@ -163,4 +193,5 @@ namespace GaraAuto.forms.addForms
             cb_tipAutomobil.AutoCompleteCustomSource = acsc;
         }
     }
+    
 }

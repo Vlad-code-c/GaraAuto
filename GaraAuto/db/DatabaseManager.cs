@@ -36,7 +36,7 @@ namespace GaraAuto.db
             SqlConnection connection = new SqlConnection(connectionString);
             // connection.Open();
 
-            return connection;
+			return connection;
         }
 
 
@@ -48,8 +48,8 @@ namespace GaraAuto.db
             {
                 using (SqlConnection connection = getConnection())
                 {
-                    String queryReturn =
-                        $"SELECT R.id, R.nume, L.id, L.nume FROM Localitate AS L, Raion AS R WHERE R.id = L.id_raion AND LOWER(L.nume) LIKE LOWER('{localitate.name}')";
+                    // String queryReturn =
+                    //     $"SELECT R.id, R.nume, L.id, L.nume FROM Localitate AS L, Raion AS R WHERE R.id = L.id_raion AND LOWER(L.nume) LIKE LOWER('{localitate.name}')";
 
                     connection.Open();
 
@@ -58,29 +58,29 @@ namespace GaraAuto.db
                     commandInsert.Parameters.Add("@numeLocalitate", SqlDbType.NVarChar).Value = localitate.name;
                     commandInsert.Parameters.Add("@numeRaion", SqlDbType.NVarChar).Value = localitate.raion.Nume;
 
-                    SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
+                    // SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
 
                     commandInsert.ExecuteNonQuery();
-                    SqlDataReader dataReader = commandSelect.ExecuteReader();
-                    if (dataReader.Read())
-                    {
-                        int id_raion = (int) dataReader["R.id"];
-                        string nume_raion = (string) dataReader["R.nume"];
-                        int id_localitate = (int) dataReader["L.id"];
-                        string nume_localit = (string) dataReader["L.nume"];
-
-
-                        return new Localitate()
-                        {
-                            id = id_localitate,
-                            name = nume_localit,
-                            raion = new Raion()
-                            {
-                                Id = id_raion,
-                                Nume = nume_raion
-                            }
-                        };
-                    }
+                    // SqlDataReader dataReader = commandSelect.ExecuteReader();
+                    // if (dataReader.Read())
+                    // {
+                    //     int id_raion = (int) dataReader["R.id"];
+                    //     string nume_raion = (string) dataReader["R.nume"];
+                    //     int id_localitate = (int) dataReader["L.id"];
+                    //     string nume_localit = (string) dataReader["L.nume"];
+                    //
+                    //
+                    //     return new Localitate()
+                    //     {
+                    //         id = id_localitate,
+                    //         name = nume_localit,
+                    //         raion = new Raion()
+                    //         {
+                    //             Id = id_raion,
+                    //             Nume = nume_raion
+                    //         }
+                    //     };
+                    // }
                 }
             }
             catch (Exception e)
@@ -88,7 +88,7 @@ namespace GaraAuto.db
                 // ignored
             }
 
-            return null;
+            return ReadLocalitate(localitate);
         }
 
         public Localitate ReadLocalitate(Localitate localitate)
@@ -134,7 +134,6 @@ namespace GaraAuto.db
             catch (Exception e)
             {
                 // MessageBox.Show(e.Message);
-                throw;
             }
 
             return null;
@@ -142,12 +141,55 @@ namespace GaraAuto.db
 
         public void UpdateLocalitate(Localitate localitate)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"UPDATE Localitate SET nume = '{localitate.name}', id_raion = {localitate.raion.Id} WHERE id = {localitate.id}";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            connection.Close();
         }
 
         public void DeleteLocalitate(Localitate localitate)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"DELETE FROM Localitate WHERE id = {localitate.id}";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("REFERENCE"))
+                {
+                    DialogResult dialogResult = MessageBox
+                        .Show("Tipul nu a putut fi sters deoarece este folosit de catre alt tabel. Afiseaza eroarea?",
+                            "Foreign Key Exception", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+                }
+            }
+
+            connection.Close();
         }
 
         public List<Localitate> GetAllLocal()
@@ -181,6 +223,7 @@ namespace GaraAuto.db
                             Nume = nume_raion
                         }
                     });
+
                 }
             }
 
@@ -286,29 +329,29 @@ namespace GaraAuto.db
                 {
                     String queryInsert =
                         $"INSERT INTO TipAutomobil(denumire, nr_locuri) VALUES ('{tipAutomobil.denumire}', {tipAutomobil.nrLocuri})";
-                    String queryReturn = $"SELECT id FROM TipAutomobil Where nume LIKE '{tipAutomobil.id}'";
+                    // String queryReturn = $"SELECT id FROM TipAutomobil Where id LIKE {tipAutomobil.id}";
 
                     connection.Open();
 
                     SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
-                    SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
+                    // SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
 
                     commandInsert.ExecuteNonQuery();
 
-                    SqlDataReader dataReader = commandSelect.ExecuteReader();
-                    if (dataReader.Read())
-                    {
-                        int id = (int) dataReader["id"];
-                        string denumire = (string) dataReader["denumire"];
-                        int nr_locuri = (int) dataReader["nr_locuri"];
-
-                        return new TipAutomobil()
-                        {
-                            id = id,
-                            denumire = denumire,
-                            nrLocuri = nr_locuri
-                        };
-                    }
+                    // SqlDataReader dataReader = commandSelect.ExecuteReader();
+                    // if (dataReader.Read())
+                    // {
+                    //     int id = (int) dataReader["id"];
+                    //     string denumire = (string) dataReader["denumire"];
+                    //     int nr_locuri = (int) dataReader["nr_locuri"];
+                    //
+                    //     return new TipAutomobil()
+                    //     {
+                    //         id = id,
+                    //         denumire = denumire,
+                    //         nrLocuri = nr_locuri
+                    //     };
+                    // }
                 }
             }
             catch (Exception e)
@@ -316,7 +359,7 @@ namespace GaraAuto.db
                 // ignored
             }
 
-            return null;
+            return ReadTipAutomobil(tipAutomobil);
         }
 
         public TipAutomobil ReadTipAutomobil(TipAutomobil tipAutomobil)
@@ -381,7 +424,6 @@ namespace GaraAuto.db
 
         public void DeleteTipAutomobil(TipAutomobil tipAutomobil)
         {
-            
             SqlConnection connection = getConnection();
             String queryInsert =
                 $"DELETE FROM TipAutomobil WHERE id = {tipAutomobil.id}";
@@ -496,7 +538,8 @@ namespace GaraAuto.db
             {
                 SqlConnection connection = getConnection();
                 String queryReturn =
-                    $"SELECT id, nr_inmatriculare, tip_automobil FROM Automobile WHERE nr_inmatriculare = '{Automobil.nrInmatriculare}' AND tip_automobil = {Automobil.tipAutomobil.id}";
+                    "SELECT Automobile.id, nr_inmatriculare, tip_automobil, Tip.denumire, Tip.nr_locuri FROM Automobile, TipAutomobil Tip " +
+                    $" WHERE nr_inmatriculare = '{Automobil.nrInmatriculare}' AND tip_automobil = {Automobil.tipAutomobil.id} AND Automobile.tip_automobil = Tip.id";
 
                 connection.Open();
 
@@ -524,7 +567,7 @@ namespace GaraAuto.db
 
             catch (Exception e)
             {
-                // ignored
+                MessageBox.Show(e.Message);
             }
 
             return null;
@@ -614,7 +657,7 @@ namespace GaraAuto.db
 
         #region Pasageri
 
-        public void CreatePasager(Pasager pasager)
+        public Pasager CreatePasager(Pasager pasager)
         {
             using (SqlConnection connection = getConnection())
             {
@@ -634,21 +677,87 @@ namespace GaraAuto.db
                     //Ignored
                 }
             }
+
+            return ReadPasager(pasager);
         }
 
-        public Localitate ReadPasager(Pasager pasager)
+        public Pasager ReadPasager(Pasager pasager)
         {
-            throw new NotImplementedException();
+            try
+            {
+                SqlConnection connection = getConnection();
+                String queryReturn =
+                    $"SELECT idnp, nume_prenume, birth_year FROM Pasager WHERE idnp = {pasager.idnp}";
+
+                connection.Open();
+
+                SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
+
+
+                SqlDataReader dataReader = commandSelect.ExecuteReader();
+                if (dataReader.Read())
+                {
+                    return new Pasager()
+                    {
+                        idnp = pasager.idnp,
+                        birth_year = (int) dataReader["birth_year"],
+                        nume_prenume = (string) dataReader["nume_prenume"]
+                    };
+                }
+
+                connection.Close();
+            }
+
+            catch (Exception e)
+            {
+                // ignored
+            }
+
+            return null;
         }
 
         public void UpdatePasager(Pasager pasager)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"UPDATE Pasager SET nume_prenume = '{pasager.nume_prenume}', birth_year = {pasager.birth_year} WHERE idnp = {pasager.idnp}";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                //Ignored
+            }
+
+            connection.Close();
         }
 
         public void DeletePasager(Pasager pasager)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"DELETE FROM Pasager WHERE idnp = {pasager.idnp}";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                //Ignored
+            }
+
+            connection.Close();
         }
 
         public List<Pasager> GetAllPasager()
@@ -756,12 +865,46 @@ namespace GaraAuto.db
 
         public void UpdateTraseu(Traseu traseu)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"UPDATE Traseu SET id_localitate_inceput = {traseu.localitate_inceput.id}, id_localitate_sfarsit = {traseu.localitate_sfarsit.id}, distanta = {traseu.distanta} WHERE id_traseu = {traseu.id_traseu}";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            connection.Close();
         }
 
         public void DeleteTraseu(Traseu traseu)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"DELETE FROM Traseu WHERE id_traseu = {traseu.id_traseu}";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                //Ignored
+            }
+
+            connection.Close();
         }
 
         public List<Traseu> GetAllTraseu()
@@ -817,26 +960,25 @@ namespace GaraAuto.db
 
         public Cursa CreateCursa(Cursa cursa)
         {
-            using (SqlConnection connection = getConnection())
+            SqlConnection connection = getConnection();
+
+            String queryInsert =
+                $"INSERT INTO Cursa(id_traseu, id_automobil, ora) VALUES ({cursa.traseu.id_traseu}, {cursa.Automobile.tipAutomobil.id}, '{cursa.ora}')";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
             {
-                String queryInsert =
-                    $"INSERT INTO Cursa(id_traseu, id_automobil, ora) VALUES ({cursa.traseu.id_traseu}, {cursa.Automobile.tipAutomobil.id}, '{cursa.ora}')";
-
-                connection.Open();
-
-                SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
-
-                try
-                {
-                    commandInsert.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                    throw;
-                }
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
 
+            connection.Close();
             return ReadCursa(cursa);
         }
 
@@ -846,7 +988,9 @@ namespace GaraAuto.db
             {
                 String queryReturn =
                     "SELECT id_cursa, id_automobil, CONVERT(nvarchar(5), ora) AS ora, id_auto, nr_inmatriculare, id_tip_auto, denumire_tip_auto, nr_locuri, id_traseu, id_localitate_inceput, id_localitate_sfarsit, distanta, Localitate_inceput, Localitate_sfarsit, id_raion_inceput, nume_raion_inceput, id_raion_sfarsit, nume_raion_sfarsit FROM Cursa_Full " +
-                    $" WHERE id_automobil LIKE '{cursa.traseu.id_traseu}' AND CONVERT(nvarchar(8), ora) LIKE '{cursa.ora}'";
+                    $" WHERE id_automobil LIKE {cursa.Automobile.id} AND CONVERT(nvarchar(8), ora) LIKE '%{cursa.ora}%' AND " +
+                    $" id_traseu = {cursa.traseu.id_traseu} ORDER BY id_cursa DESC";
+
                 connection.Open();
 
                 SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
@@ -904,12 +1048,46 @@ namespace GaraAuto.db
 
         public void UpdateCursa(Cursa cursa)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"UPDATE Cursa SET id_traseu = {cursa.traseu.id_traseu}, id_automobil = {cursa.Automobile.id}, ora = '{cursa.ora}' WHERE id_cursa = {cursa.id_cursa}";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            connection.Close();
         }
 
         public void DeleteCursa(Cursa cursa)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+            String queryInsert =
+                $"DELETE FROM Cursa WHERE id_cursa = {cursa.id_cursa}";
+
+            connection.Open();
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                //Ignored
+            }
+
+            connection.Close();
         }
 
         public List<Cursa> GetAllCursa()
@@ -982,10 +1160,29 @@ namespace GaraAuto.db
 
         public void CreateLocuriOcupate(LocuriOcupate locuriOcupate)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = getConnection();
+
+            String queryInsert =
+                $"INSERT INTO LocuriOcupate (id_cursa, id_pasager) VALUES ({locuriOcupate.cursa.id_cursa}, {locuriOcupate.pasager.idnp})";
+
+            connection.Open();
+            
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            connection.Close();
         }
 
-        public Localitate ReadLocuriOcupate(LocuriOcupate locuriOcupate)
+        public LocuriOcupate ReadLocuriOcupate(LocuriOcupate locuriOcupate)
         {
             throw new NotImplementedException();
         }
@@ -1006,5 +1203,95 @@ namespace GaraAuto.db
         }
 
         #endregion
+
+        #region User
+        
+        public User CreateUser(User user)
+        {
+            SqlConnection connection = getConnection();
+
+            String queryInsert =
+                $"INSERT INTO Users (email, password) VALUES ('{user.email}', '{user.Password}')";
+
+            connection.Open();
+            
+
+            SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
+
+            try
+            {
+                commandInsert.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            connection.Close();
+
+            return ReadUser(user);
+        }
+        
+        #endregion
+
+        public User ReadUser(User user)
+        {
+            using (SqlConnection connection = getConnection())
+            {
+                String queryReturn =
+                    $"SELECT id_user, email, password FROM Users WHERE email LIKE '{user.email}' AND password LIKE '{user.Password}'";
+
+                connection.Open();
+
+                SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
+
+                SqlDataReader dataReader = commandSelect.ExecuteReader();
+
+                if (dataReader.Read())
+                {
+                    user.id_user = (int) dataReader["id_user"];
+                    
+                    user.roles = ReadUserRoles(user);
+                    
+                    return user;
+                }
+            }
+
+            return null;
+        }
+        
+        
+        public List<Roles> ReadUserRoles(User user)
+        {
+            List<Roles> rolesList = new List<Roles>();
+
+            
+            using (SqlConnection connection = getConnection())
+            {
+                String queryReturn =
+                    $"SELECT id_user, UsersRoles.id_role, role FROM UsersRoles, Roles WHERE UsersRoles.id_role = Roles.id_role AND id_user = {user.id_user}";
+
+                connection.Open();
+
+                SqlCommand commandSelect = new SqlCommand(queryReturn, connection);
+
+                SqlDataReader dataReader = commandSelect.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    foreach (Roles value in Enum.GetValues(typeof(Roles)))
+                    {
+                        if (value.ToString() == (string) dataReader["role"])
+                        {
+                            rolesList.Add(value);
+                        }
+
+                    }
+                }
+
+            }
+
+            return rolesList;
+        }
     }
 }

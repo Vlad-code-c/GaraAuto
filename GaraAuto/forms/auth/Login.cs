@@ -1,20 +1,26 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using GaraAuto.db.objects;
 using GaraAuto.forms.main;
 
 namespace GaraAuto.forms.auth
 {
-    public partial class login : Form
+    public partial class Login : Form
     {
-        public login()
+        public Login()
         {
+	        new User();
+	        if (User.currenLoggedUser != null)
+	        {
+		        showMainPage();
+	        }
+	        
             InitializeComponent();
 
-			this.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 40, 40));
-			panelControlBar.Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, panelControlBar.Width, panelControlBar.Height, 5, 5));
+			this.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 40, 40));
+			panelControlBar.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, panelControlBar.Width, panelControlBar.Height, 5, 5));
 		
 			
 			btn_login.Click += btn_loginOnClick;
@@ -52,17 +58,22 @@ namespace GaraAuto.forms.auth
 
 	        if (User.currenLoggedUser != null)
 	        {
-		        MainForm mainForm = new MainForm();
-		        mainForm.Shown += (o, args) =>
-		        {
-					Hide();
-		        };
-		        mainForm.Show();
+		        showMainPage();
 	        }
 	        else
 	        {
 		        MessageBox.Show("Email-ul sau parola sunt incorecte!");
 	        }
+        }
+
+        private void showMainPage()
+        {
+	        MainActionPage mainForm = new MainActionPage();
+	        mainForm.Shown += (o, args) =>
+	        {
+		        Hide();
+	        };
+	        mainForm.Show();
         }
 
         private bool validateLoginForm()
@@ -80,6 +91,16 @@ namespace GaraAuto.forms.auth
 	        return true;
         }
 
+        private void label_register_Click(object sender, EventArgs e)
+        {
+	        Register register = new Register();
+	        register.Shown += (o, args) =>
+	        {
+				this.Hide();
+	        };
+	        register.Show();
+        }
+
         //https://stackoverflow.com/questions/18822067/rounded-corners-in-c-sharp-windows-forms#18822204
 		[DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
 		private static extern IntPtr CreateRoundRectRgn
@@ -92,9 +113,5 @@ namespace GaraAuto.forms.auth
 			int nHeightEllipse // height of ellipse
 		);
 
-		private void label_register_Click(object sender, EventArgs e)
-		{
-
-		}
 	}
 }

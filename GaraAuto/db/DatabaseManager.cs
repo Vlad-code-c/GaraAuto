@@ -36,7 +36,7 @@ namespace GaraAuto.db
             SqlConnection connection = new SqlConnection(connectionString);
             // connection.Open();
 
-			return connection;
+            return connection;
         }
 
 
@@ -223,7 +223,6 @@ namespace GaraAuto.db
                             Nume = nume_raion
                         }
                     });
-
                 }
             }
 
@@ -1166,7 +1165,7 @@ namespace GaraAuto.db
                 $"INSERT INTO LocuriOcupate (id_cursa, id_pasager) VALUES ({locuriOcupate.cursa.id_cursa}, {locuriOcupate.pasager.idnp})";
 
             connection.Open();
-            
+
 
             SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
 
@@ -1199,13 +1198,101 @@ namespace GaraAuto.db
 
         public List<LocuriOcupate> GetAllLocuriOcupate()
         {
-            throw new NotImplementedException();
+            List<LocuriOcupate> locuriOcupates = new List<LocuriOcupate>();
+
+            using (SqlConnection connection = getConnection())
+            {
+                String querySelect =
+                    "SELECT C.id_cursa AS 'id_cursa', " +
+                    "    id_automobil, " +
+                    "    CONVERT(nvarchar(5), ora) AS ora, " +
+                    "    id_auto, " +
+                    "    nr_inmatriculare, " +
+                    "    id_tip_auto, " +
+                    "    denumire_tip_auto, " +
+                    "    nr_locuri, " +
+                    "    id_traseu, " +
+                    "    id_localitate_inceput, " +
+                    "    id_localitate_sfarsit, " +
+                    "    distanta, " +
+                    "    Localitate_inceput, " +
+                    "    Localitate_sfarsit, " +
+                    "    id_raion_inceput, " +
+                    "    nume_raion_inceput, " +
+                    "    id_raion_sfarsit, " +
+                    "    nume_raion_sfarsit, " +
+                    "    P.idnp AS 'idnp', " +
+                    "    nume_prenume, " +
+                    "    birth_year " +
+                    " FROM LocuriOcupate LO, Cursa_Full C, Pasager P WHERE C.id_cursa = LO.id_cursa AND P.idnp = LO.id_pasager";
+
+                connection.Open();
+
+                SqlCommand commandSelect = new SqlCommand(querySelect, connection);
+
+                SqlDataReader dataReader = commandSelect.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    locuriOcupates.Add(new LocuriOcupate()
+                    {
+                        cursa = new Cursa()
+                        {
+                            id_cursa = (int) dataReader["id_cursa"],
+                            ora = (string) dataReader["ora"],
+                            Automobile = new Automobile()
+                            {
+                                id = (int) dataReader["id_automobil"],
+                                nrInmatriculare = (string) dataReader["nr_inmatriculare"],
+                                tipAutomobil = new TipAutomobil()
+                                {
+                                    denumire = (string) dataReader["denumire_tip_auto"],
+                                    id = (int) dataReader["id_tip_auto"],
+                                    nrLocuri = (int) dataReader["nr_locuri"]
+                                }
+                            },
+                            traseu = new Traseu()
+                            {
+                                id_traseu = (int) dataReader["id_traseu"],
+                                distanta = (int) dataReader["distanta"],
+                                localitate_inceput = new Localitate()
+                                {
+                                    id = (int) dataReader["id_localitate_inceput"],
+                                    name = (string) dataReader["Localitate_inceput"],
+                                    raion = new Raion()
+                                    {
+                                        Id = (int) dataReader["id_raion_inceput"],
+                                        Nume = (string) dataReader["nume_raion_inceput"]
+                                    }
+                                },
+                                localitate_sfarsit = new Localitate()
+                                {
+                                    id = (int) dataReader["id_localitate_sfarsit"],
+                                    name = (string) dataReader["Localitate_sfarsit"],
+                                    raion = new Raion()
+                                    {
+                                        Id = (int) dataReader["id_raion_sfarsit"],
+                                        Nume = (string) dataReader["nume_raion_sfarsit"]
+                                    }
+                                }
+                            }
+                        },
+                        pasager = new Pasager()
+                        {
+                            idnp = (long) dataReader["idnp"],
+                            nume_prenume = (string) dataReader["nume_prenume"],
+                            birth_year = (int) dataReader["birth_year"]
+                        }
+                    });
+                }
+            }
+
+            return locuriOcupates;
         }
 
         #endregion
 
         #region User
-        
+
         public User CreateUser(User user)
         {
             SqlConnection connection = getConnection();
@@ -1214,7 +1301,7 @@ namespace GaraAuto.db
                 $"INSERT INTO Users (email, password) VALUES ('{user.email}', '{user.Password}')";
 
             connection.Open();
-            
+
 
             SqlCommand commandInsert = new SqlCommand(queryInsert, connection);
 
@@ -1231,8 +1318,7 @@ namespace GaraAuto.db
 
             return ReadUser(user);
         }
-        
-        #endregion
+
 
         public User ReadUser(User user)
         {
@@ -1250,22 +1336,22 @@ namespace GaraAuto.db
                 if (dataReader.Read())
                 {
                     user.id_user = (int) dataReader["id_user"];
-                    
+
                     user.roles = ReadUserRoles(user);
-                    
+
                     return user;
                 }
             }
 
             return null;
         }
-        
-        
+
+
         public List<Roles> ReadUserRoles(User user)
         {
             List<Roles> rolesList = new List<Roles>();
 
-            
+
             using (SqlConnection connection = getConnection())
             {
                 String queryReturn =
@@ -1285,13 +1371,13 @@ namespace GaraAuto.db
                         {
                             rolesList.Add(value);
                         }
-
                     }
                 }
-
             }
 
             return rolesList;
         }
+
+        #endregion
     }
 }

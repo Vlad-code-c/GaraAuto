@@ -27,7 +27,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="forms\auth\login.cs" />
+    <Compile Update="forms\auth\Login.cs" />
+    <Compile Update="forms\showForms\ShowPasagerCursaX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\showForms\ShowPasagerXCursaY.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\showForms\ShowTipTransportCursaX.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

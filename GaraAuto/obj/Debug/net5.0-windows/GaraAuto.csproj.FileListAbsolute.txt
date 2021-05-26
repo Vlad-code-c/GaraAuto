@@ -49,3 +49,6 @@ E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.auth.login.
 E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.auth.Register.resources
 E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.commonUserControls.ActionCardUserControl.resources
 E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.main.MainActionPage.resources
+E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.showForms.ShowPasagerCursaX.resources
+E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.showForms.ShowPasagerXCursaY.resources
+E:\C#\Labs\GaraAuto\GaraAuto\obj\Debug\net5.0-windows\GaraAuto.forms.showForms.ShowTipTransportCursaX.resources

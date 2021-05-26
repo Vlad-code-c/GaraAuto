@@ -20,7 +20,7 @@ namespace GaraAuto
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainActionPage());
+			Application.Run(new Login());
 		}
 	}
 }

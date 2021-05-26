@@ -470,3 +470,23 @@ SELECT * FROM UsersRoles
 
 UPDATE Users Set password = '__' + password + '__' WHERE 1=1
 
+
+
+SELECT * FROM Users
+
+
+SELECT * FROM Cursa_Full
+
+SELECT C.id_cursa AS 'id_cursa',
+       P.idnp AS 'idnp',
+       nume_prenume,
+       birth_year,
+       C.*
+       
+       FROM LocuriOcupate LO, Cursa_Full C, Pasager P WHERE C.id_cursa = LO.id_cursa AND P.idnp = LO.id_pasager
+
+
+
+SELECT * FROM LocuriOcupate
+
+

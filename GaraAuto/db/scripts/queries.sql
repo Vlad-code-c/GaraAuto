@@ -489,4 +489,9 @@ SELECT C.id_cursa AS 'id_cursa',
 
 SELECT * FROM LocuriOcupate
 
+SELECT * FROM TipAutomobil
 
+
+SELECT * FROM Automobile
+
+SELECT * FROM Cursa

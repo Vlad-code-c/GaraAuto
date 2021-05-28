@@ -18,7 +18,9 @@ namespace GaraAuto.forms.addForms
         {
             InitializeComponent();
 
-            new Thread(() => { automobile = new Automobile().getAll(); }).Start();
+            new Thread(() => { 
+                automobile = new Automobile().getAll(); 
+            }).Start();
 
 
             addAutoCompleteStrings();
